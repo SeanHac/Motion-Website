@@ -1,0 +1,370 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- WordPress eXtended RSS (WXR) - Motion Informatics Content Import -->
+<!-- Import via: WordPress Dashboard → Tools → Import → WordPress -->
+<rss version="2.0"
+    xmlns:excerpt="http://wordpress.org/export/1.2/excerpt/"
+    xmlns:content="http://purl.org/rss/1.0/modules/content/"
+    xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+    xmlns:dc="http://purl.org/dc/elements/1.1/"
+    xmlns:wp="http://wordpress.org/export/1.2/">
+
+<channel>
+    <title>Motion Informatics</title>
+    <link>https://yourdomain.com</link>
+    <description>Neuromuscular Innovation</description>
+    <pubDate>Mon, 09 Mar 2026 00:00:00 +0000</pubDate>
+    <language>en-US</language>
+    <wp:wxr_version>1.2</wp:wxr_version>
+    <wp:base_site_url>https://yourdomain.com</wp:base_site_url>
+    <wp:base_blog_url>https://yourdomain.com</wp:base_blog_url>
+
+    <!-- ── AUTHORS ─────────────────────────────────────────────────────────── -->
+    <wp:author>
+        <wp:author_id>1</wp:author_id>
+        <wp:author_login><![CDATA[admin]]></wp:author_login>
+        <wp:author_email><![CDATA[admin@motioninformatics.ai]]></wp:author_email>
+        <wp:author_display_name><![CDATA[Motion Informatics]]></wp:author_display_name>
+        <wp:author_first_name><![CDATA[Motion]]></wp:author_first_name>
+        <wp:author_last_name><![CDATA[Informatics]]></wp:author_last_name>
+    </wp:author>
+
+    <!-- ── TERMS (News Types Taxonomy) ──────────────────────────────────────── -->
+    <wp:term>
+        <wp:term_id>10</wp:term_id>
+        <wp:term_taxonomy>news_type</wp:term_taxonomy>
+        <wp:term_slug>news</wp:term_slug>
+        <wp:term_parent></wp:term_parent>
+        <wp:term_name><![CDATA[News]]></wp:term_name>
+    </wp:term>
+    <wp:term>
+        <wp:term_id>11</wp:term_id>
+        <wp:term_taxonomy>news_type</wp:term_taxonomy>
+        <wp:term_slug>article</wp:term_slug>
+        <wp:term_parent></wp:term_parent>
+        <wp:term_name><![CDATA[Article]]></wp:term_name>
+    </wp:term>
+    <wp:term>
+        <wp:term_id>12</wp:term_id>
+        <wp:term_taxonomy>news_type</wp:term_taxonomy>
+        <wp:term_slug>brochure</wp:term_slug>
+        <wp:term_parent></wp:term_parent>
+        <wp:term_name><![CDATA[Brochure]]></wp:term_name>
+    </wp:term>
+    <wp:term>
+        <wp:term_id>13</wp:term_id>
+        <wp:term_taxonomy>news_type</wp:term_taxonomy>
+        <wp:term_slug>case-study</wp:term_slug>
+        <wp:term_parent></wp:term_parent>
+        <wp:term_name><![CDATA[Case Study]]></wp:term_name>
+    </wp:term>
+    <wp:term>
+        <wp:term_id>14</wp:term_id>
+        <wp:term_taxonomy>news_type</wp:term_taxonomy>
+        <wp:term_slug>whitepaper</wp:term_slug>
+        <wp:term_parent></wp:term_parent>
+        <wp:term_name><![CDATA[Whitepaper]]></wp:term_name>
+    </wp:term>
+
+    <!-- ══════════════════════════════════════════════════════════════════════
+         PAGES
+    ══════════════════════════════════════════════════════════════════════ -->
+
+    <!-- HOME PAGE -->
+    <item>
+        <title>Home</title>
+        <link>https://yourdomain.com</link>
+        <pubDate>Mon, 09 Mar 2026 00:00:00 +0000</pubDate>
+        <dc:creator><![CDATA[admin]]></dc:creator>
+        <content:encoded><![CDATA[]]></content:encoded>
+        <excerpt:encoded><![CDATA[]]></excerpt:encoded>
+        <wp:post_id>2</wp:post_id>
+        <wp:post_date><![CDATA[2026-03-09 00:00:00]]></wp:post_date>
+        <wp:post_name><![CDATA[home]]></wp:post_name>
+        <wp:status><![CDATA[publish]]></wp:status>
+        <wp:post_parent>0</wp:post_parent>
+        <wp:menu_order>1</wp:menu_order>
+        <wp:post_type><![CDATA[page]]></wp:post_type>
+        <wp:post_password><![CDATA[]]></wp:post_password>
+        <wp:is_sticky>0</wp:is_sticky>
+        <!-- Note: Set this as the static front page in Settings → Reading after import -->
+    </item>
+
+    <!-- ABOUT US -->
+    <item>
+        <title>About Us</title>
+        <link>https://yourdomain.com/about-us</link>
+        <pubDate>Mon, 09 Mar 2026 00:00:00 +0000</pubDate>
+        <dc:creator><![CDATA[admin]]></dc:creator>
+        <content:encoded><![CDATA[]]></content:encoded>
+        <excerpt:encoded><![CDATA[Motion Informatics is at the forefront of neuromuscular solutions, bridging the gap between motor data and clinical excellence.]]></excerpt:encoded>
+        <wp:post_id>3</wp:post_id>
+        <wp:post_date><![CDATA[2026-03-09 00:00:00]]></wp:post_date>
+        <wp:post_name><![CDATA[about-us]]></wp:post_name>
+        <wp:status><![CDATA[publish]]></wp:status>
+        <wp:post_parent>0</wp:post_parent>
+        <wp:menu_order>2</wp:menu_order>
+        <wp:post_type><![CDATA[page]]></wp:post_type>
+        <wp:post_password><![CDATA[]]></wp:post_password>
+        <wp:is_sticky>0</wp:is_sticky>
+        <wp:postmeta>
+            <wp:meta_key><![CDATA[_wp_page_template]]></wp:meta_key>
+            <wp:meta_value><![CDATA[page-templates/template-about.php]]></wp:meta_value>
+        </wp:postmeta>
+    </item>
+
+    <!-- CONTACT -->
+    <item>
+        <title>Contact &amp; Support</title>
+        <link>https://yourdomain.com/contact</link>
+        <pubDate>Mon, 09 Mar 2026 00:00:00 +0000</pubDate>
+        <dc:creator><![CDATA[admin]]></dc:creator>
+        <content:encoded><![CDATA[]]></content:encoded>
+        <excerpt:encoded><![CDATA[Dedicated support for our neuromuscular solutions. Connect with our expert team for technical inquiries, clinical support, or global partnership opportunities.]]></excerpt:encoded>
+        <wp:post_id>4</wp:post_id>
+        <wp:post_date><![CDATA[2026-03-09 00:00:00]]></wp:post_date>
+        <wp:post_name><![CDATA[contact]]></wp:post_name>
+        <wp:status><![CDATA[publish]]></wp:status>
+        <wp:post_parent>0</wp:post_parent>
+        <wp:menu_order>3</wp:menu_order>
+        <wp:post_type><![CDATA[page]]></wp:post_type>
+        <wp:post_password><![CDATA[]]></wp:post_password>
+        <wp:is_sticky>0</wp:is_sticky>
+        <wp:postmeta>
+            <wp:meta_key><![CDATA[_wp_page_template]]></wp:meta_key>
+            <wp:meta_value><![CDATA[page-templates/template-contact.php]]></wp:meta_value>
+        </wp:postmeta>
+    </item>
+
+    <!-- DISTRIBUTORS -->
+    <item>
+        <title>Global Distributors Network</title>
+        <link>https://yourdomain.com/distributors</link>
+        <pubDate>Mon, 09 Mar 2026 00:00:00 +0000</pubDate>
+        <dc:creator><![CDATA[admin]]></dc:creator>
+        <content:encoded><![CDATA[]]></content:encoded>
+        <excerpt:encoded><![CDATA[Partner with Motion Informatics to deliver world-class medical technology to patients and clinics across the globe.]]></excerpt:encoded>
+        <wp:post_id>5</wp:post_id>
+        <wp:post_date><![CDATA[2026-03-09 00:00:00]]></wp:post_date>
+        <wp:post_name><![CDATA[distributors]]></wp:post_name>
+        <wp:status><![CDATA[publish]]></wp:status>
+        <wp:post_parent>0</wp:post_parent>
+        <wp:menu_order>4</wp:menu_order>
+        <wp:post_type><![CDATA[page]]></wp:post_type>
+        <wp:post_password><![CDATA[]]></wp:post_password>
+        <wp:is_sticky>0</wp:is_sticky>
+        <wp:postmeta>
+            <wp:meta_key><![CDATA[_wp_page_template]]></wp:meta_key>
+            <wp:meta_value><![CDATA[page-templates/template-distributors.php]]></wp:meta_value>
+        </wp:postmeta>
+    </item>
+
+    <!-- NEWS HUB -->
+    <item>
+        <title>News &amp; Insights Hub</title>
+        <link>https://yourdomain.com/news</link>
+        <pubDate>Mon, 09 Mar 2026 00:00:00 +0000</pubDate>
+        <dc:creator><![CDATA[admin]]></dc:creator>
+        <content:encoded><![CDATA[]]></content:encoded>
+        <excerpt:encoded><![CDATA[Advancing neuromuscular rehabilitation through data-driven informatics and cutting-edge medical research.]]></excerpt:encoded>
+        <wp:post_id>6</wp:post_id>
+        <wp:post_date><![CDATA[2026-03-09 00:00:00]]></wp:post_date>
+        <wp:post_name><![CDATA[news]]></wp:post_name>
+        <wp:status><![CDATA[publish]]></wp:status>
+        <wp:post_parent>0</wp:post_parent>
+        <wp:menu_order>5</wp:menu_order>
+        <wp:post_type><![CDATA[page]]></wp:post_type>
+        <wp:post_password><![CDATA[]]></wp:post_password>
+        <wp:is_sticky>0</wp:is_sticky>
+        <wp:postmeta>
+            <wp:meta_key><![CDATA[_wp_page_template]]></wp:meta_key>
+            <wp:meta_value><![CDATA[page-templates/template-news.php]]></wp:meta_value>
+        </wp:postmeta>
+    </item>
+
+    <!-- STIMEL-03 PRODUCT -->
+    <item>
+        <title>STIMEL-03</title>
+        <link>https://yourdomain.com/stimel-03</link>
+        <pubDate>Mon, 09 Mar 2026 00:00:00 +0000</pubDate>
+        <dc:creator><![CDATA[admin]]></dc:creator>
+        <content:encoded><![CDATA[]]></content:encoded>
+        <excerpt:encoded><![CDATA[A compact, portable neuromuscular stimulator that delivers hospital-grade performance in any environment. Built for durability and clinical efficacy.]]></excerpt:encoded>
+        <wp:post_id>7</wp:post_id>
+        <wp:post_date><![CDATA[2026-03-09 00:00:00]]></wp:post_date>
+        <wp:post_name><![CDATA[stimel-03]]></wp:post_name>
+        <wp:status><![CDATA[publish]]></wp:status>
+        <wp:post_parent>0</wp:post_parent>
+        <wp:menu_order>6</wp:menu_order>
+        <wp:post_type><![CDATA[page]]></wp:post_type>
+        <wp:post_password><![CDATA[]]></wp:post_password>
+        <wp:is_sticky>0</wp:is_sticky>
+        <wp:postmeta>
+            <wp:meta_key><![CDATA[_wp_page_template]]></wp:meta_key>
+            <wp:meta_value><![CDATA[page-templates/template-product-stimel.php]]></wp:meta_value>
+        </wp:postmeta>
+    </item>
+
+    <!-- SPATIAL STIMELMD PRODUCT -->
+    <item>
+        <title>Spatial StimelMD</title>
+        <link>https://yourdomain.com/spatial-stimelmd</link>
+        <pubDate>Mon, 09 Mar 2026 00:00:00 +0000</pubDate>
+        <dc:creator><![CDATA[admin]]></dc:creator>
+        <content:encoded><![CDATA[]]></content:encoded>
+        <excerpt:encoded><![CDATA[The world's first AI-integrated platform combining Immersive Motor Training with AR-enhanced Functional Electrical Stimulation.]]></excerpt:encoded>
+        <wp:post_id>8</wp:post_id>
+        <wp:post_date><![CDATA[2026-03-09 00:00:00]]></wp:post_date>
+        <wp:post_name><![CDATA[spatial-stimelmd]]></wp:post_name>
+        <wp:status><![CDATA[publish]]></wp:status>
+        <wp:post_parent>0</wp:post_parent>
+        <wp:menu_order>7</wp:menu_order>
+        <wp:post_type><![CDATA[page]]></wp:post_type>
+        <wp:post_password><![CDATA[]]></wp:post_password>
+        <wp:is_sticky>0</wp:is_sticky>
+        <wp:postmeta>
+            <wp:meta_key><![CDATA[_wp_page_template]]></wp:meta_key>
+            <wp:meta_value><![CDATA[page-templates/template-product-spatial.php]]></wp:meta_value>
+        </wp:postmeta>
+    </item>
+
+    <!-- ══════════════════════════════════════════════════════════════════════
+         SAMPLE NEWS POSTS
+    ══════════════════════════════════════════════════════════════════════ -->
+
+    <!-- Article 1 -->
+    <item>
+        <title>Why AR Outperforms VR in Neuromuscular Rehabilitation</title>
+        <link>https://yourdomain.com/news/ar-vs-vr-rehabilitation</link>
+        <pubDate>Mon, 12 Mar 2024 00:00:00 +0000</pubDate>
+        <dc:creator><![CDATA[admin]]></dc:creator>
+        <content:encoded><![CDATA[<p>Recent clinical studies show that Augmented Reality (AR) provides critical visual proprioceptive feedback that VR often obscures. By overlaying digital cues onto the real world, patients maintain spatial awareness while receiving precise stimulation feedback.</p><p>This article explores the neurological basis for AR's superiority in motor rehabilitation contexts, reviewing data from 12 partner clinics across North America and Europe.</p><h2>Key Findings</h2><ul><li>AR patients showed 23% faster motor recovery in upper-limb protocols</li><li>Reduced disorientation symptoms compared to VR cohort</li><li>Higher patient compliance rates (94% vs 78% for VR)</li></ul>]]></content:encoded>
+        <excerpt:encoded><![CDATA[Recent clinical studies show that Augmented Reality (AR) provides critical visual proprioceptive feedback that VR often obscures, leading to better rehabilitation outcomes.]]></excerpt:encoded>
+        <wp:post_id>100</wp:post_id>
+        <wp:post_date><![CDATA[2024-03-12 00:00:00]]></wp:post_date>
+        <wp:post_name><![CDATA[ar-vs-vr-rehabilitation]]></wp:post_name>
+        <wp:status><![CDATA[publish]]></wp:status>
+        <wp:post_parent>0</wp:post_parent>
+        <wp:menu_order>0</wp:menu_order>
+        <wp:post_type><![CDATA[post]]></wp:post_type>
+        <wp:post_password><![CDATA[]]></wp:post_password>
+        <wp:is_sticky>0</wp:is_sticky>
+        <category domain="news_type" nicename="article"><![CDATA[Article]]></category>
+        <wp:postmeta>
+            <wp:meta_key><![CDATA[_mi_featured]]></wp:meta_key>
+            <wp:meta_value><![CDATA[1]]></wp:meta_value>
+        </wp:postmeta>
+    </item>
+
+    <!-- Article 2 -->
+    <item>
+        <title>Outcome Analysis: Robotic-Assisted Stroke Recovery</title>
+        <link>https://yourdomain.com/news/robotic-stroke-recovery</link>
+        <pubDate>Tue, 12 Mar 2024 00:00:00 +0000</pubDate>
+        <dc:creator><![CDATA[admin]]></dc:creator>
+        <content:encoded><![CDATA[<p>Evaluating the efficacy of our M-1 series informatics on upper-limb motor recovery in chronic stroke patients over a 12-week period. This multi-center study enrolled 148 patients across 6 rehabilitation facilities.</p><h2>Study Design</h2><p>Patients were randomized to either the Motion Informatics STIMEL-03 protocol or standard physiotherapy. Primary endpoints included Fugl-Meyer Assessment scores and grip strength measurements.</p><h2>Results</h2><p>The STIMEL-03 group demonstrated statistically significant improvements across all primary endpoints (p &lt; 0.001), with a mean 31% improvement in Fugl-Meyer scores compared to 14% in the control group.</p>]]></content:encoded>
+        <excerpt:encoded><![CDATA[Evaluating the efficacy of our M-1 series informatics on upper-limb motor recovery in chronic stroke patients over a 12-week period.]]></excerpt:encoded>
+        <wp:post_id>101</wp:post_id>
+        <wp:post_date><![CDATA[2024-03-12 00:00:00]]></wp:post_date>
+        <wp:post_name><![CDATA[robotic-stroke-recovery]]></wp:post_name>
+        <wp:status><![CDATA[publish]]></wp:status>
+        <wp:post_parent>0</wp:post_parent>
+        <wp:menu_order>0</wp:menu_order>
+        <wp:post_type><![CDATA[post]]></wp:post_type>
+        <wp:post_password><![CDATA[]]></wp:post_password>
+        <wp:is_sticky>0</wp:is_sticky>
+        <category domain="news_type" nicename="case-study"><![CDATA[Case Study]]></category>
+    </item>
+
+    <!-- Article 3 -->
+    <item>
+        <title>Motion Informatics Partners with European Health Consortium</title>
+        <link>https://yourdomain.com/news/european-health-consortium</link>
+        <pubDate>Wed, 28 Feb 2024 00:00:00 +0000</pubDate>
+        <dc:creator><![CDATA[admin]]></dc:creator>
+        <content:encoded><![CDATA[<p>Motion Informatics is proud to announce a landmark multi-year partnership with the European Health Consortium to bring advanced informatics to over 40 rehabilitation centers across 5 countries.</p><p>This agreement, spanning France, Germany, the Netherlands, Spain, and Sweden, will introduce the STIMEL-03 and Spatial StimelMD platforms to approximately 28,000 patients annually.</p><h2>Partnership Details</h2><p>Under the terms of the agreement, Motion Informatics will provide full clinical training, ongoing software updates, and dedicated technical support for all consortium member facilities.</p>]]></content:encoded>
+        <excerpt:encoded><![CDATA[A multi-year partnership to bring advanced informatics to over 40 rehabilitation centers across 5 countries in Europe.]]></excerpt:encoded>
+        <wp:post_id>102</wp:post_id>
+        <wp:post_date><![CDATA[2024-02-28 00:00:00]]></wp:post_date>
+        <wp:post_name><![CDATA[european-health-consortium]]></wp:post_name>
+        <wp:status><![CDATA[publish]]></wp:status>
+        <wp:post_parent>0</wp:post_parent>
+        <wp:menu_order>0</wp:menu_order>
+        <wp:post_type><![CDATA[post]]></wp:post_type>
+        <wp:post_password><![CDATA[]]></wp:post_password>
+        <wp:is_sticky>0</wp:is_sticky>
+        <category domain="news_type" nicename="news"><![CDATA[News]]></category>
+    </item>
+
+    <!-- Article 4 -->
+    <item>
+        <title>The Future of Wearable EMG Sensors in Home-Care</title>
+        <link>https://yourdomain.com/news/wearable-emg-home-care</link>
+        <pubDate>Thu, 15 Feb 2024 00:00:00 +0000</pubDate>
+        <dc:creator><![CDATA[admin]]></dc:creator>
+        <content:encoded><![CDATA[<p>How miniaturized electromyography sensors are changing the landscape of remote patient monitoring and tele-rehab. As devices shrink and connectivity improves, the clinic is coming to the patient.</p><p>This article reviews the current state of wearable EMG technology, the regulatory landscape for home-use devices, and Motion Informatics' roadmap for consumer-grade neural monitoring.</p>]]></content:encoded>
+        <excerpt:encoded><![CDATA[How miniaturized electromyography sensors are changing the landscape of remote patient monitoring and tele-rehab.]]></excerpt:encoded>
+        <wp:post_id>103</wp:post_id>
+        <wp:post_date><![CDATA[2024-02-15 00:00:00]]></wp:post_date>
+        <wp:post_name><![CDATA[wearable-emg-home-care]]></wp:post_name>
+        <wp:status><![CDATA[publish]]></wp:status>
+        <wp:post_parent>0</wp:post_parent>
+        <wp:menu_order>0</wp:menu_order>
+        <wp:post_type><![CDATA[post]]></wp:post_type>
+        <wp:post_password><![CDATA[]]></wp:post_password>
+        <wp:is_sticky>0</wp:is_sticky>
+        <category domain="news_type" nicename="article"><![CDATA[Article]]></category>
+    </item>
+
+    <!-- Article 5 -->
+    <item>
+        <title>Reducing Recovery Time: A Multi-Clinic Data Review</title>
+        <link>https://yourdomain.com/news/reducing-recovery-time</link>
+        <pubDate>Tue, 30 Jan 2024 00:00:00 +0000</pubDate>
+        <dc:creator><![CDATA[admin]]></dc:creator>
+        <content:encoded><![CDATA[<p>An aggregated look at how real-time biofeedback accelerates muscle re-education by 25% compared to traditional methods. Data collected from 23 clinical sites over 18 months.</p><h2>Methodology</h2><p>Retrospective analysis of 1,247 patient records comparing standard physical therapy protocols with Motion Informatics-augmented rehabilitation pathways.</p><h2>Key Results</h2><ul><li>25% reduction in average recovery time</li><li>18% improvement in patient satisfaction scores</li><li>Significant reduction in therapist time per session</li></ul>]]></content:encoded>
+        <excerpt:encoded><![CDATA[An aggregated look at how real-time biofeedback accelerates muscle re-education by 25% compared to traditional methods.]]></excerpt:encoded>
+        <wp:post_id>104</wp:post_id>
+        <wp:post_date><![CDATA[2024-01-30 00:00:00]]></wp:post_date>
+        <wp:post_name><![CDATA[reducing-recovery-time]]></wp:post_name>
+        <wp:status><![CDATA[publish]]></wp:status>
+        <wp:post_parent>0</wp:post_parent>
+        <wp:menu_order>0</wp:menu_order>
+        <wp:post_type><![CDATA[post]]></wp:post_type>
+        <wp:post_password><![CDATA[]]></wp:post_password>
+        <wp:is_sticky>0</wp:is_sticky>
+        <category domain="news_type" nicename="case-study"><![CDATA[Case Study]]></category>
+    </item>
+
+    <!-- Article 6 -->
+    <item>
+        <title>2024 Product Catalog: Neuromuscular Solutions</title>
+        <link>https://yourdomain.com/news/2024-product-catalog</link>
+        <pubDate>Mon, 01 Jan 2024 00:00:00 +0000</pubDate>
+        <dc:creator><![CDATA[admin]]></dc:creator>
+        <content:encoded><![CDATA[<p>Download our comprehensive 2024 product catalog featuring detailed specifications, clinical evidence summaries, and ordering information for our full range of neuromuscular solutions.</p><p>This catalog includes the STIMEL-03 portable stimulator, Spatial StimelMD enterprise platform, and all compatible accessories and consumables.</p>]]></content:encoded>
+        <excerpt:encoded><![CDATA[Download our comprehensive 2024 product catalog featuring detailed specifications, clinical evidence summaries, and ordering information.]]></excerpt:encoded>
+        <wp:post_id>105</wp:post_id>
+        <wp:post_date><![CDATA[2024-01-01 00:00:00]]></wp:post_date>
+        <wp:post_name><![CDATA[2024-product-catalog]]></wp:post_name>
+        <wp:status><![CDATA[publish]]></wp:status>
+        <wp:post_parent>0</wp:post_parent>
+        <wp:menu_order>0</wp:menu_order>
+        <wp:post_type><![CDATA[post]]></wp:post_type>
+        <wp:post_password><![CDATA[]]></wp:post_password>
+        <wp:is_sticky>0</wp:is_sticky>
+        <category domain="news_type" nicename="brochure"><![CDATA[Brochure]]></category>
+    </item>
+
+    <!-- ══════════════════════════════════════════════════════════════════════
+         NAV MENUS
+    ══════════════════════════════════════════════════════════════════════ -->
+    <wp:term>
+        <wp:term_id>50</wp:term_id>
+        <wp:term_taxonomy>nav_menu</wp:term_taxonomy>
+        <wp:term_slug>primary-menu</wp:term_slug>
+        <wp:term_parent></wp:term_parent>
+        <wp:term_name><![CDATA[Primary Menu]]></wp:term_name>
+    </wp:term>
+
+</channel>
+</rss>

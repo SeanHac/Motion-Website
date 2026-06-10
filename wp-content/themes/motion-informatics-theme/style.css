@@ -1,0 +1,17 @@
+/*
+Theme Name: Motion Informatics
+Theme URI: https://motioninformatics.ai
+Author: Motion Informatics
+Author URI: https://motioninformatics.ai
+Description: Custom WordPress theme for Motion Informatics — neuromuscular medical device company. Features dark/light mode, full ACF integration, accessibility-ready, and Yoast SEO compatible.
+Version: 1.0.0
+Requires at least: 6.0
+Tested up to: 6.7
+Requires PHP: 8.0
+License: GNU General Public License v2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
+Text Domain: motion-informatics
+Tags: dark-mode, accessibility-ready, custom-colors, custom-logo, custom-menu, full-width-template, translation-ready, medical
+*/
+
+/* Base resets handled by Tailwind Preflight */

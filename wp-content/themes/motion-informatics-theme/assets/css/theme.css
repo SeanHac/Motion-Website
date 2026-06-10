@@ -1,0 +1,752 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   Motion Informatics — Custom Theme Styles
+   Supplements Tailwind CSS (loaded via CDN)
+═══════════════════════════════════════════════════════════════════════════ */
+
+/* ── FONTS ─────────────────────────────────────────────────────────────────── */
+body {
+    font-family: 'Inter', sans-serif;
+}
+
+.font-display {
+    font-family: 'Inter', sans-serif;
+}
+
+/* ── MATERIAL SYMBOLS ─────────────────────────────────────────────────────── */
+.material-symbols-outlined {
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    line-height: 1;
+    vertical-align: middle;
+}
+
+/* ── GLASS NAV ─────────────────────────────────────────────────────────────── */
+.glass-nav {
+    backdrop-filter: blur(14px);
+    background-color: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 1px 0 rgba(0,0,0,0.06);
+}
+html.dark .glass-nav {
+    background-color: rgba(22, 22, 28, 0.92);
+    box-shadow: 0 1px 0 rgba(255,255,255,0.05);
+}
+
+/* ── GLASS PANEL ────────────────────────────────────────────────────────────── */
+.glass-panel {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+html.dark .glass-panel {
+    background: rgba(22, 22, 28, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* ── DARK MODE FULL PAGE ────────────────────────────────────────────────────── */
+html.dark body {
+    background-color: #16161c;
+    color: #f3f4f6;
+}
+html.dark .bg-white {
+    background-color: #1e1e2a !important;
+}
+html.dark .bg-gray-50 {
+    background-color: #1a1a24 !important;
+}
+html.dark .text-\[\#131316\] {
+    color: #f9fafb !important;
+}
+html.dark .text-gray-700 { color: #d1d5db !important; }
+html.dark .text-gray-600 { color: #9ca3af !important; }
+html.dark .text-gray-500 { color: #9ca3af !important; }
+html.dark .text-gray-400 { color: #9ca3af !important; }
+html.dark .text-gray-300 { color: #d1d5db !important; }
+html.dark .border-gray-100 {
+    border-color: #2d2d3d !important;
+}
+
+/* ── DARK MODE: SLATE OVERRIDES (Tailwind CDN class-mode compat) ────────────── */
+/* Tailwind CDN uses @media dark, but this theme uses html.dark — override all   */
+html.dark .text-slate-900  { color: #f9fafb !important; }
+html.dark .text-slate-800  { color: #f3f4f6 !important; }
+html.dark .text-slate-700  { color: #d1d5db !important; }
+html.dark .text-slate-600  { color: #9ca3af !important; }
+html.dark .text-slate-500  { color: #9ca3af !important; }
+html.dark .text-slate-400  { color: #6b7280 !important; }
+html.dark .text-slate-300  { color: #9ca3af !important; }
+
+html.dark .bg-slate-50     { background-color: #1a1a24 !important; }
+html.dark .bg-slate-100    { background-color: #1e1e2a !important; }
+html.dark .bg-slate-800    { background-color: #1e1e2a !important; }
+html.dark .bg-slate-900    { background-color: #16161c !important; }
+
+html.dark .border-slate-100 { border-color: #2d2d3d !important; }
+html.dark .border-slate-200 { border-color: #2d2d3d !important; }
+html.dark .border-slate-700 { border-color: #3d3d50 !important; }
+html.dark .border-slate-800 { border-color: #2d2d3d !important; }
+
+/* Purple text → white in dark mode (Tailwind arbitrary class + attribute selector fallback) */
+html.dark .text-\[\#3f3e6f\]  { color: #f9fafb !important; }
+html.dark .text-\[\#131316\]  { color: #f9fafb !important; }
+
+/* Attribute selector fallback: inline style color:#3f3e6f → white in dark mode */
+html.dark h1[class*="text-"][style*="#3f3e6f"],
+html.dark h2[class*="text-"][style*="#3f3e6f"],
+html.dark h3[class*="text-"][style*="#3f3e6f"] { color: #f9fafb !important; }
+
+/* Target headings using the Tailwind arbitrary class (belt-and-suspenders) */
+html.dark h1.text-\[\#3f3e6f\],
+html.dark h2.text-\[\#3f3e6f\],
+html.dark h3.text-\[\#3f3e6f\],
+html.dark div.text-\[\#3f3e6f\],
+html.dark span.text-\[\#3f3e6f\],
+html.dark p.text-\[\#3f3e6f\],
+html.dark th.text-\[\#3f3e6f\] { color: #f9fafb !important; }
+
+/* Product page primary buttons (purple bg) → ochre in dark mode */
+html.dark .mi-product-primary-btn {
+    background-color: #CC7722 !important;
+    border-color: #CC7722 !important;
+    box-shadow: 0 14px 30px -8px rgba(204,119,34,0.4) !important;
+}
+
+/* Attribute selector fallback for internal page buttons with inline purple bg */
+html.dark a[style*="background-color:#3f3e6f"].mi-product-primary-btn {
+    background-color: #CC7722 !important;
+    box-shadow: 0 14px 30px -8px rgba(204,119,34,0.4) !important;
+}
+
+/* ── DARK MODE: HOME PAGE SPECIFICS ─────────────────────────────────────────── */
+/* Home hero btn 1 stays PURPLE in dark mode (hero has dark bg overlay — purple is visible) */
+/* html.dark .mi-hero-primary-btn intentionally NOT overridden here */
+
+/* Capabilities icon wrappers → teal in dark mode */
+html.dark .cap-icon-wrap {
+    background-color: rgba(45,157,168,0.12) !important;
+    color: #2D9DA8 !important;
+}
+
+/* CTA box → ochre in dark mode */
+html.dark .mi-home-cta-box {
+    background-color: #CC7722 !important;
+}
+
+/* ── BUTTON SYSTEM ──────────────────────────────────────────────────────────── */
+.mi-btn-primary,
+.mi-btn-ghost,
+.mi-btn-outline,
+.mi-btn-ochre {
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
+}
+.mi-btn-primary:hover,
+.mi-btn-ghost:hover,
+.mi-btn-outline:hover,
+.mi-btn-ochre:hover {
+    transform: translateY(-3px) scale(1.01);
+}
+.mi-btn-primary:active,
+.mi-btn-ghost:active,
+.mi-btn-outline:active,
+.mi-btn-ochre:active {
+    transform: translateY(0) scale(1);
+}
+
+.mi-btn-primary {
+    background-color: #3f3e6f;
+    color: #ffffff;
+    box-shadow: 0 8px 25px -8px rgba(63, 62, 111, 0.6);
+}
+.mi-btn-primary:hover {
+    background-color: #2d2c5a;
+    box-shadow: 0 14px 32px -8px rgba(63, 62, 111, 0.7);
+}
+
+.mi-btn-ghost {
+    background-color: rgba(255, 255, 255, 0.12);
+    color: #ffffff;
+    border: 2px solid rgba(255, 255, 255, 0.35);
+    backdrop-filter: blur(6px);
+}
+.mi-btn-ghost:hover {
+    background-color: rgba(255, 255, 255, 0.22);
+    border-color: rgba(255, 255, 255, 0.6);
+    box-shadow: 0 14px 32px -8px rgba(255, 255, 255, 0.2);
+}
+
+.mi-btn-outline {
+    border: 2px solid #3f3e6f;
+    color: #3f3e6f;
+    background: transparent;
+}
+.mi-btn-outline:hover {
+    background-color: #3f3e6f;
+    color: #ffffff;
+    box-shadow: 0 14px 32px -8px rgba(63, 62, 111, 0.5);
+}
+
+/* ── CARD SYSTEM ────────────────────────────────────────────────────────────── */
+.mi-card {
+    background: #ffffff;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+}
+.mi-card:hover {
+    box-shadow: 0 16px 40px rgba(0,0,0,0.12);
+}
+html.dark .mi-card {
+    background: #1e1e2a;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.3);
+}
+html.dark .mi-card:hover {
+    box-shadow: 0 16px 40px rgba(0,0,0,0.5);
+}
+
+/* ── SCROLLBAR UTILITIES ────────────────────────────────────────────────────── */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* ── SKIP LINK (Accessibility) ─────────────────────────────────────────────── */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+}
+.sr-only.focus\:not-sr-only:focus {
+    position: static;
+    width: auto;
+    height: auto;
+    padding: inherit;
+    margin: inherit;
+    overflow: visible;
+    clip: auto;
+    white-space: normal;
+}
+
+/* ── FOCUS STYLES (Accessibility) ──────────────────────────────────────────── */
+:focus-visible {
+    outline: 3px solid #3f3e6f;
+    outline-offset: 3px;
+    border-radius: 4px;
+}
+html.dark :focus-visible {
+    outline-color: #2D9DA8;
+}
+
+/* ── ACCESSIBILITY TOOLBAR ──────────────────────────────────────────────────── */
+.mi-a11y-bar {
+    position: fixed;
+    bottom: 32px;
+    right: 0;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    gap: 0;
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-right: none;
+    border-radius: 12px 0 0 12px;
+    box-shadow: -4px 4px 24px rgba(0,0,0,0.12);
+    overflow: hidden;
+    transform: translateX(calc(100% - 48px));
+    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.mi-a11y-bar:hover,
+.mi-a11y-bar:focus-within {
+    transform: translateX(0);
+}
+html.dark .mi-a11y-bar {
+    background: #1e1e2a;
+    border-color: #2d2d3d;
+    box-shadow: -4px 4px 24px rgba(0,0,0,0.4);
+}
+
+.mi-a11y-label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    width: 48px;
+    min-height: 80px;
+    background: #3f3e6f;
+    color: #ffffff;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    flex-shrink: 0;
+    cursor: default;
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    padding: 12px 0;
+}
+.mi-a11y-label .material-symbols-outlined {
+    writing-mode: horizontal-tb;
+    font-size: 20px;
+    margin-bottom: 4px;
+}
+
+.mi-a11y-tools {
+    display: flex;
+    align-items: center;
+    padding: 10px 14px;
+    gap: 4px;
+}
+
+.mi-a11y-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 8px;
+    border: none;
+    background: transparent;
+    color: #3f3e6f;
+    cursor: pointer;
+    transition: background 0.2s ease, color 0.2s ease, transform 0.15s ease;
+    flex-shrink: 0;
+}
+.mi-a11y-btn:hover {
+    background: #3f3e6f;
+    color: #ffffff;
+    transform: scale(1.1);
+}
+.mi-a11y-btn[aria-pressed="true"] {
+    background: #3f3e6f;
+    color: #ffffff;
+}
+html.dark .mi-a11y-btn {
+    color: #9ca3af;
+}
+html.dark .mi-a11y-btn:hover,
+html.dark .mi-a11y-btn[aria-pressed="true"] {
+    background: #2D9DA8;
+    color: #ffffff;
+}
+
+.mi-a11y-divider {
+    display: block;
+    width: 1px;
+    height: 28px;
+    background: #e5e7eb;
+    margin: 0 6px;
+    flex-shrink: 0;
+}
+html.dark .mi-a11y-divider {
+    background: #2d2d3d;
+}
+
+.mi-a11y-reset {
+    color: #cc7722;
+}
+.mi-a11y-reset:hover {
+    background: #cc7722 !important;
+    color: #ffffff !important;
+}
+
+/* ── ACCESSIBILITY STATES ───────────────────────────────────────────────────── */
+html.a11y-high-contrast {
+    filter: contrast(160%);
+}
+html.a11y-grayscale {
+    filter: grayscale(100%);
+}
+html.a11y-dyslexia body,
+html.a11y-dyslexia * {
+    font-family: 'Arial', 'Helvetica', sans-serif !important;
+    letter-spacing: 0.05em !important;
+    word-spacing: 0.12em !important;
+    line-height: 1.8 !important;
+}
+html.a11y-stop-anim *,
+html.a11y-stop-anim *::before,
+html.a11y-stop-anim *::after {
+    animation: none !important;
+    transition: none !important;
+}
+
+/* ── HERO ANIMATIONS ────────────────────────────────────────────────────────── */
+@keyframes heroSlideUp {
+    from { opacity: 0; transform: translateY(28px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes heroFadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+@keyframes scrollLine {
+    0%   { transform: scaleY(0); transform-origin: top; }
+    50%  { transform: scaleY(1); transform-origin: top; }
+    51%  { transform: scaleY(1); transform-origin: bottom; }
+    100% { transform: scaleY(0); transform-origin: bottom; }
+}
+
+.hero-anim-1 { animation: heroSlideUp 0.7s cubic-bezier(0.4,0,0.2,1) 0.1s both; }
+.hero-anim-2 { animation: heroSlideUp 0.7s cubic-bezier(0.4,0,0.2,1) 0.25s both; }
+.hero-anim-3 { animation: heroSlideUp 0.7s cubic-bezier(0.4,0,0.2,1) 0.4s both; }
+.hero-anim-4 { animation: heroSlideUp 0.7s cubic-bezier(0.4,0,0.2,1) 0.55s both; }
+.scroll-line  { animation: scrollLine 2s ease-in-out infinite; }
+
+/* ── SCROLL ENTRANCE (data-animate) ─────────────────────────────────────────── */
+[data-animate] {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.65s cubic-bezier(0.4,0,0.2,1), transform 0.65s cubic-bezier(0.4,0,0.2,1);
+}
+[data-animate].is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ── ANIMATION UTILITIES ────────────────────────────────────────────────────── */
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50%       { transform: translateY(-8px); }
+}
+.animate-float { animation: float 4s ease-in-out infinite; }
+
+@keyframes pulse-ring {
+    0%   { transform: scale(1); opacity: 0.8; }
+    100% { transform: scale(1.6); opacity: 0; }
+}
+.animate-pulse-ring::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    border: 2px solid currentColor;
+    animation: pulse-ring 2s ease-out infinite;
+}
+
+/* ── MAP MARKER ─────────────────────────────────────────────────────────────── */
+.map-marker { transition: transform 0.3s ease; }
+.map-marker:hover { transform: scale(1.25); }
+
+/* ── PRODUCT PAGE SCROLL FIX ────────────────────────────────────────────────── */
+[id^="immersive"], [id^="adaptability"], [id^="vision"], [id^="specs"], [id^="cloud"] {
+    scroll-margin-top: 8rem;
+}
+
+/* ── TYPOGRAPHY UTILITIES ───────────────────────────────────────────────────── */
+.line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+.line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* ── TAILWIND TYPOGRAPHY PLUGIN FALLBACK ───────────────────────────────────── */
+.prose { color: inherit; max-width: 65ch; }
+.prose h1, .prose h2, .prose h3, .prose h4 { font-weight: 700; margin-top: 1.5em; margin-bottom: 0.5em; }
+.prose p { margin-bottom: 1em; line-height: 1.75; }
+.prose ul { list-style: disc; padding-left: 1.5em; }
+.prose li { margin-bottom: 0.25em; }
+.prose a { color: #3f3e6f; text-decoration: underline; }
+html.dark .prose { color: #d1d5db; }
+html.dark .prose h1, html.dark .prose h2, html.dark .prose h3 { color: #f9fafb; }
+html.dark .prose a { color: #2D9DA8; }
+
+/* ── FORM INPUTS DARK MODE ──────────────────────────────────────────────────── */
+html.dark input, html.dark textarea, html.dark select { color-scheme: dark; }
+
+/* ── NEWS CARD HOVER ────────────────────────────────────────────────────────── */
+article:hover .group-hover\:text-primary { color: #3f3e6f; }
+
+/* ── PAGINATION ─────────────────────────────────────────────────────────────── */
+.page-numbers { display: inline-flex; }
+.page-numbers.current {
+    background-color: #3f3e6f;
+    color: white;
+    border-radius: 0.5rem;
+    width: 2.5rem;
+    height: 2.5rem;
+    align-items: center;
+    justify-content: center;
+}
+
+/* ── DARK MODE TOGGLE ICON ──────────────────────────────────────────────────── */
+html.dark .dark-icon { display: none; }
+html.dark .light-icon { display: inline; }
+html:not(.dark) .dark-icon { display: inline; }
+html:not(.dark) .light-icon { display: none; }
+
+/* ── MOBILE MENU STATE ──────────────────────────────────────────────────────── */
+#mobile-menu.is-open { display: block; }
+#mobile-menu-btn[aria-expanded="true"] .hamburger-icon { display: none; }
+#mobile-menu-btn[aria-expanded="true"] .close-icon { display: inline; }
+#mobile-menu-btn[aria-expanded="false"] .hamburger-icon { display: inline; }
+#mobile-menu-btn[aria-expanded="false"] .close-icon { display: none; }
+
+/* ── CUSTOMIZER LIVE PREVIEW SUPPORT ────────────────────────────────────────── */
+:root {
+    --mi-primary: #3f3e6f;
+    --mi-accent-teal: #2D9DA8;
+    --mi-accent-ochre: #CC7722;
+    --mi-bg-light: #f6f6f7;
+    --mi-bg-dark: #16161c;
+}
+
+/* ── HIGH CONTRAST MODE ─────────────────────────────────────────────────────── */
+@media (forced-colors: active) {
+    .mi-btn-primary, .mi-btn-ghost, .mi-btn-outline { forced-color-adjust: none; }
+    :focus-visible { outline: 3px solid ButtonText; }
+}
+
+/* ── PRINT STYLES ───────────────────────────────────────────────────────────── */
+@media print {
+    header, footer, #mobile-menu, #dark-mode-toggle, #mi-accessibility-toolbar { display: none; }
+    main { padding-top: 0 !important; }
+    a[href]::after { content: ' (' attr(href) ')'; font-size: 0.8em; color: #666; }
+}
+
+/* ── REDUCED MOTION ─────────────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+    .hero-anim-1, .hero-anim-2, .hero-anim-3, .hero-anim-4 { animation: none; opacity: 1; }
+    [data-animate] { opacity: 1; transform: none; }
+}
+
+/* ── GUTENBERG BLOCK EDITOR ─────────────────────────────────────────────────── */
+.wp-block-image img { max-width: 100%; height: auto; }
+.wp-block-embed { margin: 1rem 0; }
+.alignfull { width: 100vw; margin-left: calc(50% - 50vw); }
+.alignwide { width: calc(100% + 4rem); margin-left: -2rem; }
+
+/* ── CUSTOM LOGO SIZING ─────────────────────────────────────────────────────── */
+.custom-logo-link img.custom-logo {
+    max-height: 48px;
+    width: auto;
+}
+
+/* ── WOOCOMMERCE COMPATIBILITY ──────────────────────────────────────────────── */
+.woocommerce table.shop_table { width: 100%; border-collapse: collapse; }
+
+/* ── HERO PARALLAX ──────────────────────────────────────────────────────────── */
+.hero-parallax {
+    will-change: transform;
+}
+
+/* ── STAT ITEM HOVER ────────────────────────────────────────────────────────── */
+.stat-item {
+    transition: transform 0.3s ease;
+}
+.stat-item:hover {
+    transform: translateY(-4px);
+}
+
+/* ── ENHANCED BUTTON HOVER EFFECTS ──────────────────────────────────────────── */
+
+/* Spring-bounce transition for all CTA-style action buttons */
+.mi-contact-btn,
+.mi-contact-mobile,
+.mi-btn-ochre,
+.mi-btn-primary,
+.mi-btn-ghost,
+.mi-btn-outline {
+    transition:
+        transform   0.45s cubic-bezier(0.34, 1.56, 0.64, 1),
+        box-shadow  0.45s ease,
+        background-color 0.3s ease,
+        border-color 0.3s ease,
+        filter      0.3s ease !important;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Shimmer sweep on hover */
+.mi-contact-btn::after,
+.mi-contact-mobile::after,
+.mi-btn-ochre::after,
+.mi-btn-primary::after,
+.mi-btn-ghost::after,
+.mi-btn-outline::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -120%;
+    width: 55%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.28), transparent);
+    transform: skewX(-20deg);
+    transition: left 0.55s ease;
+    pointer-events: none;
+}
+.mi-contact-btn:hover::after,
+.mi-contact-mobile:hover::after,
+.mi-btn-ochre:hover::after,
+.mi-btn-primary:hover::after,
+.mi-btn-ghost:hover::after,
+.mi-btn-outline:hover::after {
+    left: 160%;
+}
+
+.mi-btn-ghost:hover {
+    transform: translateY(-5px) scale(1.02) !important;
+    box-shadow: 0 18px 36px -8px rgba(255,255,255,0.2) !important;
+}
+.mi-btn-outline:hover {
+    transform: translateY(-5px) scale(1.02) !important;
+    box-shadow: 0 18px 36px -8px rgba(63,62,111,0.45) !important;
+}
+
+.mi-contact-btn:hover {
+    transform: translateY(-5px) scale(1.02) !important;
+    box-shadow: 0 18px 36px -8px rgba(63,62,111,0.55) !important;
+}
+.mi-btn-ochre:hover {
+    transform: translateY(-5px) scale(1.02) !important;
+    box-shadow: 0 18px 36px -8px rgba(45,157,168,0.55) !important;
+}
+.mi-contact-mobile:hover {
+    transform: translateY(-3px) !important;
+    box-shadow: 0 12px 28px -8px rgba(63,62,111,0.5) !important;
+}
+
+/* Spring-bounce on any a/button that has h-14 class (all our big CTA buttons) */
+a[class*="h-14"], button[class*="h-14"],
+a[class*="h-11"], button[class*="h-11"] {
+    transition:
+        transform   0.45s cubic-bezier(0.34, 1.56, 0.64, 1),
+        box-shadow  0.45s ease,
+        filter      0.3s ease !important;
+}
+
+/* Active press feedback */
+.mi-contact-btn:active,
+.mi-btn-ochre:active,
+.mi-btn-ghost:active,
+.mi-btn-outline:active,
+.mi-btn-primary:active,
+a[class*="h-14"]:active,
+button[class*="h-14"]:active {
+    transform: translateY(1px) scale(0.98) !important;
+    transition-duration: 0.1s !important;
+}
+
+/* Slower, more dramatic scroll-entrance transition */
+[data-animate] {
+    transition:
+        opacity   0.85s cubic-bezier(0.4,0,0.2,1),
+        transform 0.85s cubic-bezier(0.4,0,0.2,1) !important;
+}
+
+/* ── WHITE / LIGHT CTA BUTTONS (replaces hover:bg-gray-100) ─────────────────── */
+/* Targets white bg buttons that previously used Tailwind's hover:bg-gray-100.   */
+/* Remove hover:bg-gray-100 from those elements in PHP and this rule takes over. */
+a.rounded-lg.font-bold:not(.mi-btn-ochre):not(.mi-btn-primary):not(.mi-btn-ghost):not(.mi-btn-outline):hover,
+a.rounded-xl.font-bold:not(.mi-btn-ochre):not(.mi-btn-primary):not(.mi-btn-ghost):not(.mi-btn-outline):hover {
+    transform: translateY(-5px) scale(1.02) !important;
+    box-shadow: 0 18px 36px -8px rgba(45,157,168,0.55) !important;
+    transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.45s ease !important;
+}
+
+/* ── FILTER PILL BUTTONS (rounded-full tag filters) ─────────────────────────── */
+/* Subtle hover for small filter pills — remove hover:bg-gray-100 from PHP too.  */
+a.rounded-full:not([class*="mi-btn"]):hover {
+    opacity: 0.75 !important;
+    transform: translateY(-1px) !important;
+    transition: opacity 0.2s ease, transform 0.2s ease !important;
+}
+
+/* ── DARK MODE WCAG CONTRAST IMPROVEMENTS ───────────────────────────────────
+   Ensures all interactive & text elements meet minimum 4.5:1 contrast ratio
+   in dark mode. Replaces low-contrast classes applied by Tailwind CDN dark:
+   variants (which don't fire under html.dark toggle).
+─────────────────────────────────────────────────────────────────────────── */
+
+/* --- Tables --- */
+html.dark table { color: #f3f4f6; }
+html.dark thead tr { background-color: #1a1a24 !important; }
+html.dark tbody tr:nth-child(even) { background-color: #1c1c26 !important; }
+html.dark td, html.dark th { border-color: #2d2d3d !important; color: #e5e7eb !important; }
+html.dark .overflow-hidden.rounded-2xl.border { border-color: #2d2d3d !important; }
+
+/* --- Borders --- */
+html.dark .border-gray-200 { border-color: #2d2d3d !important; }
+html.dark .border-slate-100 { border-color: #2d2d3d !important; }
+html.dark .border-slate-200 { border-color: #2d2d3d !important; }
+html.dark .border-white\/20 { border-color: rgba(255,255,255,0.15) !important; }
+html.dark .border-white\/30 { border-color: rgba(255,255,255,0.2) !important; }
+
+/* --- Buttons: ensure text is always readable --- */
+html.dark button { color: #e5e7eb; }
+html.dark .spec-trigger { color: #f3f4f6 !important; background-color: #1e1e2a !important; }
+html.dark .spec-trigger:hover { background-color: #252535 !important; }
+html.dark .spec-panel { color: #9ca3af !important; background-color: #16161c !important; }
+
+/* --- Inline style overrides: purple bg elements in dark mode --- */
+html.dark [style*="background-color:#3f3e6f"]:not(.mi-contact-btn):not(.mi-contact-mobile):not(#a11y-trigger):not(.mi-product-primary-btn):not(header):not(.mi-home-cta-box) {
+    background-color: #2d2c5a !important;
+}
+
+/* CTA boxes on hero sections → ensure text stays white */
+html.dark section[style*="background-color:#3f3e6f"] *,
+html.dark .mi-home-cta-box * { color: inherit; }
+
+/* --- Cards and panels --- */
+html.dark .bg-white\/90  { background-color: rgba(22,22,28,0.92) !important; color: #f3f4f6 !important; }
+html.dark .bg-white\/10  { background-color: rgba(255,255,255,0.08) !important; }
+html.dark .bg-white\/20  { background-color: rgba(255,255,255,0.12) !important; }
+html.dark .bg-black\/80  { background-color: rgba(0,0,0,0.9) !important; }
+
+/* --- Progress bars and decorative bars --- */
+html.dark .bg-white\/20.rounded-full { background-color: rgba(255,255,255,0.15) !important; }
+
+/* --- Link colors in dark mode (footer, nav text) --- */
+html.dark a.hover\:text-primary:hover,
+html.dark a.hover\:text-accent-teal:hover { color: #2D9DA8 !important; }
+
+/* --- Input fields in dark mode (contact/newsletter forms) --- */
+html.dark input, html.dark textarea, html.dark select {
+    background-color: #1e1e2a !important;
+    color: #f3f4f6 !important;
+    border-color: #3d3d50 !important;
+}
+html.dark input::placeholder, html.dark textarea::placeholder {
+    color: #6b7280 !important;
+}
+html.dark input:focus, html.dark textarea:focus {
+    border-color: #2D9DA8 !important;
+    outline-color: #2D9DA8 !important;
+}
+
+/* --- Distributor / About page dividers --- */
+html.dark hr { border-color: #2d2d3d !important; }
+
+/* --- Badge text in dark mode (teal badges on purple bg) --- */
+html.dark span[style*="color:#2D9DA8"] { color: #4bbac4 !important; }
+
+/* --- Footer text contrast --- */
+html.dark footer p, html.dark footer span, html.dark footer li { color: #9ca3af !important; }
+html.dark footer h3 { color: #f3f4f6 !important; }
+html.dark footer a { color: #9ca3af !important; }
+html.dark footer a:hover { color: #2D9DA8 !important; }
+
+/* --- Cookie banner in dark mode --- */
+html.dark #mi-cookie-banner {
+    background: #1e1e2a !important;
+    border-color: #2d2d3d !important;
+}
+html.dark #mi-cookie-banner p { color: #d1d5db !important; }
+html.dark #mi-cookie-decline { border-color: #4b5563 !important; color: #9ca3af !important; }
+
+/* Card hover — deeper lift */
+.group:hover,
+.hover\:shadow-2xl:hover {
+    transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.45s ease !important;
+}
