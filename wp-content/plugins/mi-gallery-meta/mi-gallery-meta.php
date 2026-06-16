@@ -313,7 +313,6 @@ function mi_repeater_metabox($post_id, $meta_key, $fields, $defaults) {
             $tpl_row .= '<div class="mi-rep-cell' . $wide . '"><label>' . $flabel . '</label><input type="text" name="' . $uid . '[__i__][' . $fname . ']" placeholder="' . $fph . '"></div>';
         }
     }
-    $tpl_row = esc_js($tpl_row);
     ?>
     <style>
     .mi-rep-list .mi-rep-row{display:flex;gap:8px;align-items:flex-start;padding:8px;border:1px solid #ddd;border-radius:6px;margin-bottom:8px;background:#fafafa;}
@@ -361,7 +360,7 @@ function mi_repeater_metabox($post_id, $meta_key, $fields, $defaults) {
     (function($){
         var uid = '<?php echo $uid; ?>';
         var idx = <?php echo count($items); ?>;
-        var tpl = '<?php echo $tpl_row; ?>';
+        var tpl = <?php echo wp_json_encode($tpl_row); ?>;
 
         $('#' + uid + '-list').sortable({items:'.mi-rep-row', handle:'.mi-rep-handle'});
 

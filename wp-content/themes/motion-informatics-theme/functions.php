@@ -74,7 +74,7 @@ function mi_enqueue_assets() {
         'mi-theme',
         get_template_directory_uri() . '/assets/css/theme.css',
         ['mi-fonts'],
-        '1.4.0'
+        filemtime(get_template_directory() . '/assets/css/theme.css')
     );
 
     // Tailwind CDN (must be in head, not footer)
@@ -104,7 +104,7 @@ function mi_enqueue_assets() {
         'mi-theme',
         get_template_directory_uri() . '/assets/js/theme.js',
         [],
-        '1.2.0',
+        filemtime(get_template_directory() . '/assets/js/theme.js'),
         true
     );
 

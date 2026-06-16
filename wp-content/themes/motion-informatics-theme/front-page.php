@@ -28,6 +28,11 @@ get_header(); ?>
     <div class="relative h-full max-w-7xl mx-auto px-6 lg:px-20 flex flex-col justify-center items-start gap-8">
         <div class="max-w-3xl space-y-4">
 
+            <span class="hero-anim-1 inline-block px-3 py-1 text-[#2D9DA8] text-xs font-bold uppercase tracking-widest rounded-full border border-[#2D9DA8]/30"
+                  style="background-color:rgba(45,157,168,0.2)">
+                <?php echo esc_html(mi_field('home_hero_badge', false, 'Leading Neuromuscular Care')); ?>
+            </span>
+
             <h1 class="hero-anim-2 text-white text-5xl md:text-7xl font-black leading-tight tracking-tight">
                 <?php echo esc_html(mi_field('home_hero_heading1', false, 'We Are')); ?><br>
                 <span class="text-[#2D9DA8]"><?php echo esc_html(mi_field('home_hero_heading2', false, 'Motion Informatics')); ?></span>
@@ -183,14 +188,14 @@ get_header(); ?>
             function_exists('get_field') ? (get_field('home_prod_img_2') ?: '') : '',
         ];
         ?>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+        <div class="flex flex-col md:flex-row gap-10">
             <?php foreach ($products as $i => $product) :
                 $badge_bg     = ($product['badge_color'] ?? '') === 'accent-teal' ? '#2D9DA8' : '#3f3e6f';
-                $img_url      = $img_overrides[$i] ?: ($product['image'] ?? '') ?: ($img_fallbacks[$i] ?? '');
+                $img_url      = ($img_overrides[$i] ?? '') ?: ($product['image'] ?? '') ?: ($img_fallbacks[$i] ?? '');
                 $features     = $product['features'] ?? [];
                 $img_fallback = esc_js($img_fallbacks[$i] ?? $img_fallbacks[0]);
             ?>
-            <div class="bg-white dark:bg-gray-800 rounded-2xl overflow-hidden flex flex-col shadow-lg border border-gray-100 dark:border-gray-700 group hover:-translate-y-1 hover:shadow-2xl transition-all duration-300"
+            <div class="flex-1 min-w-0 bg-white dark:bg-gray-800 rounded-2xl overflow-hidden flex flex-col shadow-lg border border-gray-100 dark:border-gray-700 group hover:-translate-y-1 hover:shadow-2xl transition-all duration-300"
                  data-animate style="transition-delay:<?php echo $i*120; ?>ms">
 
                 <div class="h-64 overflow-hidden relative">
