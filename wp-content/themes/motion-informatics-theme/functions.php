@@ -244,8 +244,6 @@ function mi_register_acf_fields() {
             ['key'=>'field_home_tab_products','label'=>'Products Overview','name'=>'','type'=>'tab','placement'=>'top','endpoint'=>0],
             ['key'=>'field_home_prod_heading',  'label'=>'Products Heading',     'name'=>'home_prod_heading', 'type'=>'text','default_value'=>'Precision Technology Overview'],
             ['key'=>'field_home_prod_desc',     'label'=>'Products Description', 'name'=>'home_prod_desc',    'type'=>'textarea','rows'=>2,'default_value'=>'Explore our flagship medical solutions designed for clinics and hospitals worldwide.'],
-            ['key'=>'field_home_prod_img_1',    'label'=>'STIMEL-03 Card Image', 'name'=>'home_prod_img_1',   'type'=>'image','return_format'=>'url','preview_size'=>'mi-card','instructions'=>'Upload to override the STIMEL-03 product card image'],
-            ['key'=>'field_home_prod_img_2',    'label'=>'Spatial StimelMD Card Image','name'=>'home_prod_img_2','type'=>'image','return_format'=>'url','preview_size'=>'mi-card','instructions'=>'Upload to override the Spatial StimelMD product card image'],
             ['key'=>'field_home_products',      'label'=>'Products',             'name'=>'home_products',     'type'=>'repeater',
                 'button_label'=>'Add Product', 'min'=>1, 'max'=>6, 'layout'=>'block',
                 'sub_fields'=>[

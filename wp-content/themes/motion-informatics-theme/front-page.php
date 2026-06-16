@@ -179,21 +179,15 @@ get_header(); ?>
         ?>
 
         <?php
-        $img_fallbacks = [
-            get_template_directory_uri() . '/assets/images/stimel3-device-1.png',
-            get_template_directory_uri() . '/assets/images/ssmd-img-5.jpg',
-        ];
-        $img_overrides = [
-            function_exists('get_field') ? (get_field('home_prod_img_1') ?: '') : '',
-            function_exists('get_field') ? (get_field('home_prod_img_2') ?: '') : '',
-        ];
+        // Generic fallback images (used only if a row has no image set yet).
+        $img_fallback_default = get_template_directory_uri() . '/assets/images/stimel3-device-1.png';
         ?>
         <div class="flex flex-col md:flex-row gap-10">
             <?php foreach ($products as $i => $product) :
                 $badge_bg     = ($product['badge_color'] ?? '') === 'accent-teal' ? '#2D9DA8' : '#3f3e6f';
-                $img_url      = ($img_overrides[$i] ?? '') ?: ($product['image'] ?? '') ?: ($img_fallbacks[$i] ?? '');
+                $img_url      = $product['image'] ?? '';
                 $features     = $product['features'] ?? [];
-                $img_fallback = esc_js($img_fallbacks[$i] ?? $img_fallbacks[0]);
+                $img_fallback = esc_js($img_fallback_default);
             ?>
             <div class="flex-1 min-w-0 bg-white dark:bg-gray-800 rounded-2xl overflow-hidden flex flex-col shadow-lg border border-gray-100 dark:border-gray-700 group hover:-translate-y-1 hover:shadow-2xl transition-all duration-300"
                  data-animate style="transition-delay:<?php echo $i*120; ?>ms">

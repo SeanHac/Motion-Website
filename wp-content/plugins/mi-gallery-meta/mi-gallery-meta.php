@@ -196,6 +196,7 @@ add_action('add_meta_boxes', function () {
 
         add_meta_box('mi_home_products', '📦 Product Cards — Homepage', function ($post) {
             mi_repeater_metabox($post->ID, 'home_products_json', [
+                ['name'=>'image',        'label'=>'Product Image',                  'type'=>'image',    'placeholder'=>'',            'wide'=>true],
                 ['name'=>'badge',        'label'=>'Badge Text',                     'type'=>'text',     'placeholder'=>'New Release', 'wide'=>false],
                 ['name'=>'name',         'label'=>'Product Name',                   'type'=>'text',     'placeholder'=>'',            'wide'=>false],
                 ['name'=>'description',  'label'=>'Description',                    'type'=>'textarea', 'placeholder'=>'',            'wide'=>true],
@@ -203,8 +204,8 @@ add_action('add_meta_boxes', function () {
                 ['name'=>'button_text',  'label'=>'Button Text',                    'type'=>'text',     'placeholder'=>'Product Details', 'wide'=>false],
                 ['name'=>'button_url',   'label'=>'Button URL',                     'type'=>'text',     'placeholder'=>'https://',     'wide'=>false],
             ], [
-                ['badge'=>'Flagship Device',    'name'=>'STIMEL-03®',           'description'=>'Intelligent closed-loop neuromuscular stimulation system for post-stroke and neurological rehabilitation.','features'=>"EMG-triggered stimulation\nAdaptive threshold modulation\nMulti-channel precision\nClinical data analytics",'button_text'=>'Product Details','button_url'=>'/stimel-03'],
-                ['badge'=>'Next Generation',    'name'=>'Spatial StimelMD®',    'description'=>'AR-integrated rehabilitation platform combining FES, NMES and real-time biofeedback for immersive therapy.','features'=>"AR immersive biofeedback\nAI-driven adaptability\nMulti-modal stimulation\nRemote monitoring",'button_text'=>'Product Details','button_url'=>'/spatial-stimelmd'],
+                ['image'=>get_template_directory_uri() . '/assets/images/stimel3-device-1.png', 'badge'=>'Flagship Device',    'name'=>'STIMEL-03®',           'description'=>'Intelligent closed-loop neuromuscular stimulation system for post-stroke and neurological rehabilitation.','features'=>"EMG-triggered stimulation\nAdaptive threshold modulation\nMulti-channel precision\nClinical data analytics",'button_text'=>'Product Details','button_url'=>'/stimel-03'],
+                ['image'=>get_template_directory_uri() . '/assets/images/ssmd-img-5.jpg',       'badge'=>'Next Generation',    'name'=>'Spatial StimelMD®',    'description'=>'AR-integrated rehabilitation platform combining FES, NMES and real-time biofeedback for immersive therapy.','features'=>"AR immersive biofeedback\nAI-driven adaptability\nMulti-modal stimulation\nRemote monitoring",'button_text'=>'Product Details','button_url'=>'/spatial-stimelmd'],
             ]);
         }, 'page', 'normal', 'high');
     }
@@ -309,6 +310,8 @@ function mi_repeater_metabox($post_id, $meta_key, $fields, $defaults) {
         $wide  = !empty($f['wide']) ? ' mi-rep-wide' : '';
         if ($f['type'] === 'textarea') {
             $tpl_row .= '<div class="mi-rep-cell' . $wide . '"><label>' . $flabel . '</label><textarea name="' . $uid . '[__i__][' . $fname . ']" placeholder="' . $fph . '"></textarea></div>';
+        } elseif ($f['type'] === 'image') {
+            $tpl_row .= '<div class="mi-rep-cell' . $wide . ' mi-rep-image-cell"><label>' . $flabel . '</label><div class="mi-rep-image-preview"></div><input type="hidden" class="mi-rep-image-input" name="' . $uid . '[__i__][' . $fname . ']" value=""><button type="button" class="button mi-rep-image-pick">Choose Image</button> <button type="button" class="button mi-rep-image-clear" style="display:none">Remove</button></div>';
         } else {
             $tpl_row .= '<div class="mi-rep-cell' . $wide . '"><label>' . $flabel . '</label><input type="text" name="' . $uid . '[__i__][' . $fname . ']" placeholder="' . $fph . '"></div>';
         }
@@ -324,6 +327,9 @@ function mi_repeater_metabox($post_id, $meta_key, $fields, $defaults) {
     .mi-rep-cell input,.mi-rep-cell textarea{width:100%;font-size:13px;box-sizing:border-box;}
     .mi-rep-cell textarea{height:55px;resize:vertical;}
     .mi-rep-del{background:#cc0000;color:#fff;border:none;border-radius:4px;padding:4px 8px;cursor:pointer;font-size:12px;flex-shrink:0;}
+    .mi-rep-image-cell{flex-basis:100%;}
+    .mi-rep-image-preview{margin-bottom:6px;}
+    .mi-rep-image-preview img{max-width:160px;max-height:100px;border:1px solid #ccc;border-radius:4px;display:block;}
     </style>
 
     <div>
@@ -338,10 +344,15 @@ function mi_repeater_metabox($post_id, $meta_key, $fields, $defaults) {
                     $val   = $item[$f['name']] ?? '';
                     $fph   = esc_attr($f['placeholder'] ?? '');
                 ?>
-                    <div class="mi-rep-cell<?php echo $wide; ?>">
+                    <div class="mi-rep-cell<?php echo $wide; ?><?php echo $f['type'] === 'image' ? ' mi-rep-image-cell' : ''; ?>">
                         <label><?php echo esc_html($f['label']); ?></label>
                         <?php if ($f['type'] === 'textarea'): ?>
                         <textarea name="<?php echo $uid; ?>[<?php echo $i; ?>][<?php echo $fname; ?>]" placeholder="<?php echo $fph; ?>"><?php echo esc_textarea($val); ?></textarea>
+                        <?php elseif ($f['type'] === 'image'): ?>
+                        <div class="mi-rep-image-preview"><?php if ($val) : ?><img src="<?php echo esc_url($val); ?>" alt=""><?php endif; ?></div>
+                        <input type="hidden" class="mi-rep-image-input" name="<?php echo $uid; ?>[<?php echo $i; ?>][<?php echo $fname; ?>]" value="<?php echo esc_attr($val); ?>">
+                        <button type="button" class="button mi-rep-image-pick">Choose Image</button>
+                        <button type="button" class="button mi-rep-image-clear" style="<?php echo $val ? '' : 'display:none'; ?>">Remove</button>
                         <?php else: ?>
                         <input type="text" name="<?php echo $uid; ?>[<?php echo $i; ?>][<?php echo $fname; ?>]" value="<?php echo esc_attr($val); ?>" placeholder="<?php echo $fph; ?>">
                         <?php endif; ?>
@@ -384,6 +395,26 @@ function mi_repeater_metabox($post_id, $meta_key, $fields, $defaults) {
                 });
             });
         }
+
+        $('#' + uid + '-list').on('click', '.mi-rep-image-pick', function(){
+            var $cell = $(this).closest('.mi-rep-image-cell');
+            var frame = wp.media({title:'Select Image', button:{text:'Use this image'}, multiple:false, library:{type:'image'}});
+            frame.on('select', function(){
+                var att = frame.state().get('selection').first().toJSON();
+                var url = (att.sizes && att.sizes.medium) ? att.sizes.medium.url : att.url;
+                $cell.find('.mi-rep-image-input').val(att.url);
+                $cell.find('.mi-rep-image-preview').html('<img src="' + url + '" alt="">');
+                $cell.find('.mi-rep-image-clear').show();
+            });
+            frame.open();
+        });
+
+        $('#' + uid + '-list').on('click', '.mi-rep-image-clear', function(){
+            var $cell = $(this).closest('.mi-rep-image-cell');
+            $cell.find('.mi-rep-image-input').val('');
+            $cell.find('.mi-rep-image-preview').empty();
+            $(this).hide();
+        });
     })(jQuery);
     </script>
     <?php
