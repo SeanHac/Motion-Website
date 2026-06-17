@@ -85,6 +85,10 @@ add_action('add_meta_boxes', function () {
                 ['url' => $base . '/assets/videos/stimel-wrist-demo.mp4'],
             ]);
         }, 'page', 'normal', 'high');
+
+        add_meta_box('mi_s3_videos_diff', '🎬 Videos — After Key Differentiators', function ($post) {
+            mi_videos_metabox($post->ID, 's3_videos_diff_json', []);
+        }, 'page', 'normal', 'high');
     }
 
     if ($tpl === 'page-templates/template-product-spatial.php') {
@@ -655,7 +659,7 @@ add_action('save_post', function ($post_id) {
     if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) return;
     if (!current_user_can('edit_post', $post_id)) return;
 
-    foreach (['s3_videos_json'] as $meta_key) {
+    foreach (['s3_videos_json', 's3_videos_diff_json'] as $meta_key) {
         $nonce_key = 'mi_vid_nonce_' . $meta_key;
         if (!isset($_POST[$nonce_key]) || !wp_verify_nonce($_POST[$nonce_key], 'mi_vid_save_' . $meta_key)) continue;
 

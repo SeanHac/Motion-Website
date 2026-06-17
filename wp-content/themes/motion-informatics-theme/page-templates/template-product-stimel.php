@@ -134,6 +134,46 @@ get_header(); ?>
             </li>
             <?php endforeach; ?>
         </ul>
+
+        <!-- ═══════════════════════════════════════════════════════════════
+             VIDEOS — AFTER KEY DIFFERENTIATORS (nested in same container)
+        ═══════════════════════════════════════════════════════════════ -->
+        <?php
+        $diff_videos_raw = get_post_meta(get_the_ID(), 's3_videos_diff_json', true);
+        $diff_videos = ($diff_videos_raw) ? json_decode($diff_videos_raw, true) : null;
+        if (is_array($diff_videos)) {
+            $has_any_url = false;
+            foreach ($diff_videos as $_v) { if (!empty($_v['url'])) { $has_any_url = true; break; } }
+            if (!$has_any_url) $diff_videos = null;
+        }
+        ?>
+        <?php if (!empty($diff_videos)) : ?>
+        <div class="mt-12 grid grid-cols-1 <?php echo (count($diff_videos) > 1) ? 'lg:grid-cols-2' : ''; ?> gap-8">
+            <?php foreach ($diff_videos as $vid) :
+                $vurl = $vid['url'] ?? '';
+                if (!$vurl) continue;
+                $yt_id = mi_youtube_id($vurl);
+            ?>
+            <div class="rounded-2xl overflow-hidden shadow-xl bg-gray-900 aspect-video">
+                <?php if ($yt_id) : ?>
+                <iframe class="w-full h-full"
+                        src="https://www.youtube.com/embed/<?php echo esc_attr($yt_id); ?>"
+                        title="<?php esc_attr_e('Product video', 'motion-informatics'); ?>"
+                        frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        referrerpolicy="strict-origin-when-cross-origin"
+                        allowfullscreen
+                        loading="lazy"></iframe>
+                <?php else : ?>
+                <video class="w-full h-full object-cover" controls preload="metadata">
+                    <source src="<?php echo esc_url($vurl); ?>" type="video/mp4">
+                    <?php _e('Your browser does not support video playback.', 'motion-informatics'); ?>
+                </video>
+                <?php endif; ?>
+            </div>
+            <?php endforeach; ?>
+        </div>
+        <?php endif; ?>
     </div>
 </section>
 
