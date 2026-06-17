@@ -107,6 +107,13 @@ add_action('add_meta_boxes', function () {
             ]);
         }, 'page', 'normal', 'high');
 
+        add_meta_box('mi_sp_immersive_video', '🎬 Immersive Training Video — SSMD', function ($post) {
+            $base = get_template_directory_uri();
+            mi_videos_metabox($post->ID, 'sp_immersive_video_json', [
+                ['url' => $base . '/assets/videos/ssmd-immersive-demo.mp4'],
+            ]);
+        }, 'page', 'normal', 'high');
+
         add_meta_box('mi_sp_challenge_stats', '📊 Rehabilitation Gap Stats — SSMD', function ($post) {
             mi_repeater_metabox($post->ID, 'sp_challenge_stats_json', [
                 ['name'=>'value',  'label'=>'Value (e.g. 68%)',  'type'=>'text',     'placeholder'=>'', 'wide'=>false],
@@ -659,7 +666,7 @@ add_action('save_post', function ($post_id) {
     if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) return;
     if (!current_user_can('edit_post', $post_id)) return;
 
-    foreach (['s3_videos_json', 's3_videos_diff_json'] as $meta_key) {
+    foreach (['s3_videos_json', 's3_videos_diff_json', 'sp_immersive_video_json'] as $meta_key) {
         $nonce_key = 'mi_vid_nonce_' . $meta_key;
         if (!isset($_POST[$nonce_key]) || !wp_verify_nonce($_POST[$nonce_key], 'mi_vid_save_' . $meta_key)) continue;
 

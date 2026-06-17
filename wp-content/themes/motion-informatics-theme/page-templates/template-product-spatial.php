@@ -80,6 +80,51 @@ get_header(); ?>
             <div class="absolute -top-10 -left-10 w-40 h-40 rounded-full blur-3xl -z-10" style="background-color:rgba(45,157,168,0.2);" aria-hidden="true"></div>
             <div class="absolute -bottom-10 -right-10 w-60 h-60 rounded-full blur-3xl -z-10" style="background-color:rgba(63,62,111,0.2);" aria-hidden="true"></div>
         </div>
+
+        <!-- Immersive Motor Training demo video(s) — full width, spans both columns -->
+        <?php
+        $tdir_hero     = get_template_directory_uri();
+        $imm_video_raw = get_post_meta(get_the_ID(), 'sp_immersive_video_json', true);
+        $imm_videos    = ($imm_video_raw) ? json_decode($imm_video_raw, true) : null;
+        if (is_array($imm_videos)) {
+            $imm_has_url = false;
+            foreach ($imm_videos as $_v) { if (!empty($_v['url'])) { $imm_has_url = true; break; } }
+            if (!$imm_has_url) $imm_videos = null;
+        }
+        if (!$imm_videos) {
+            $imm_videos = [
+                ['url' => $tdir_hero . '/assets/videos/ssmd-immersive-demo.mp4'],
+            ];
+        }
+        ?>
+        <div class="lg:col-span-2 mt-8 grid grid-cols-1 <?php echo count($imm_videos) > 1 ? 'lg:grid-cols-2' : ''; ?> gap-8">
+            <?php foreach ($imm_videos as $imm_v) :
+                $imm_v_url = $imm_v['url'] ?? '';
+                if (!$imm_v_url) continue;
+                $imm_yt_id = mi_youtube_id($imm_v_url);
+            ?>
+            <div class="relative rounded-2xl overflow-hidden shadow-xl bg-slate-900 aspect-video">
+                <?php if ($imm_yt_id) : ?>
+                <iframe class="w-full h-full"
+                        src="https://www.youtube.com/embed/<?php echo esc_attr($imm_yt_id); ?>"
+                        title="Immersive Motor Training demonstration video"
+                        frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        referrerpolicy="strict-origin-when-cross-origin"
+                        allowfullscreen
+                        loading="lazy"></iframe>
+                <?php else : ?>
+                <video class="w-full h-full object-cover"
+                       controls
+                       preload="metadata"
+                       aria-label="Immersive Motor Training demonstration video">
+                    <source src="<?php echo esc_url($imm_v_url); ?>" type="video/mp4">
+                    <?php _e('Your browser does not support video playback.', 'motion-informatics'); ?>
+                </video>
+                <?php endif; ?>
+            </div>
+            <?php endforeach; ?>
+        </div>
     </div>
 </section>
 
