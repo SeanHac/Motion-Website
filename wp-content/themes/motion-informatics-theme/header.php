@@ -3,10 +3,45 @@
 <head>
     <meta charset="<?php bloginfo('charset'); ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="light only">
     <link rel="profile" href="https://gmpg.org/xfn/11">
     <?php wp_head(); ?>
+    <!-- Safety net: actively strip any @media (prefers-color-scheme: dark) rules
+         from the page's stylesheets, in case anything (Tailwind CDN or otherwise)
+         injects them despite darkMode being disabled in the config. Runs repeatedly
+         for a few seconds since Tailwind's CDN regenerates its stylesheet as it scans
+         classes on the page. -->
+    <script>
+        (function () {
+            function stripDarkRules(sheet) {
+                var rules;
+                try { rules = sheet.cssRules; } catch (e) { return; }
+                if (!rules) return;
+                for (var i = rules.length - 1; i >= 0; i--) {
+                    var rule = rules[i];
+                    if (rule.media && rule.media.mediaText && rule.media.mediaText.indexOf('prefers-color-scheme') !== -1) {
+                        try { sheet.deleteRule(i); } catch (e) {}
+                    }
+                }
+            }
+            function stripAll() {
+                for (var i = 0; i < document.styleSheets.length; i++) {
+                    try { stripDarkRules(document.styleSheets[i]); } catch (e) {}
+                }
+            }
+            stripAll();
+            var observer = new MutationObserver(stripAll);
+            observer.observe(document.head, { childList: true, subtree: true, characterData: true });
+            var tries = 0;
+            var timer = setInterval(function () {
+                stripAll();
+                if (++tries > 40) clearInterval(timer);
+            }, 250);
+        })();
+    </script>
     <!-- Inline dark-mode: always works regardless of CSS caching -->
     <style>
+        html{color-scheme:light}
         html.dark body{background-color:#16161c!important;color:#f3f4f6!important}
         html.dark .glass-nav{background-color:rgba(22,22,28,0.92)!important}
         /* Logo switching — dark mode removed; dark logo CSS kept but html.dark never fires */
@@ -212,7 +247,7 @@ html.dark .a11y-toggle-btn[aria-pressed="true"]{background:#2D9DA8;border-color:
         <?php
         $nav_stimel   = ($p = get_page_by_path('stimel-03'))       ? get_permalink($p) : '#';
         $nav_spatial  = ($p = get_page_by_path('spatial-stimelmd')) ? get_permalink($p) : '#';
-        $nav_kinyara  = ($p = get_page_by_path('kinyara'))          ? get_permalink($p) : '#';
+        $nav_kinyara  = ($p = get_page_by_path('kynara'))          ? get_permalink($p) : '#';
         $nav_home    = home_url('/');
         $nav_about   = ($p = get_page_by_path('about-us'))         ? get_permalink($p) : '#';
         $nav_news    = ($p = get_page_by_path('news'))             ? get_permalink($p) : '#';
@@ -253,7 +288,7 @@ html.dark .a11y-toggle-btn[aria-pressed="true"]{background:#2D9DA8;border-color:
                        class="flex items-center gap-3 px-4 py-3 text-sm font-medium hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
                        role="menuitem">
                         <span class="material-symbols-outlined text-base" style="color:#CC7722" aria-hidden="true">science</span>
-                        Kinyara<sup style="font-size:0.6em;vertical-align:super">®</sup>
+                        Kynara<sup style="font-size:0.6em;vertical-align:super">®</sup>
                         <span class="ml-auto text-[9px] font-bold px-1.5 py-0.5 rounded-full text-white" style="background-color:#CC7722;">Soon</span>
                     </a>
                 </div>
@@ -295,7 +330,7 @@ html.dark .a11y-toggle-btn[aria-pressed="true"]{background:#2D9DA8;border-color:
             <?php
             $stimel_url   = ($sp = get_page_by_path('stimel-03'))       ? get_permalink($sp) : '#';
             $spatial_url  = ($sp = get_page_by_path('spatial-stimelmd')) ? get_permalink($sp) : '#';
-            $kinyara_url  = ($sp = get_page_by_path('kinyara'))          ? get_permalink($sp) : '#';
+            $kinyara_url  = ($sp = get_page_by_path('kynara'))          ? get_permalink($sp) : '#';
             $about_url   = ($sp = get_page_by_path('about-us'))         ? get_permalink($sp) : '#';
             $news_url    = ($sp = get_page_by_path('news'))             ? get_permalink($sp) : '#';
             $contact_url = ($sp = get_page_by_path('contact'))          ? get_permalink($sp) : '#';
@@ -304,7 +339,7 @@ html.dark .a11y-toggle-btn[aria-pressed="true"]{background:#2D9DA8;border-color:
                 <p class="text-xs font-bold uppercase tracking-widest text-gray-400 mb-3"><?php _e('Products', 'motion-informatics'); ?></p>
                 <a href="<?php echo esc_url($stimel_url); ?>"  class="block py-2 text-sm font-semibold">STIMEL-03<sup style="font-size:0.6em;vertical-align:super">®</sup></a>
                 <a href="<?php echo esc_url($spatial_url); ?>" class="block py-2 text-sm font-semibold">Spatial StimelMD<sup style="font-size:0.6em;vertical-align:super">®</sup></a>
-                <a href="<?php echo esc_url($kinyara_url); ?>" class="block py-2 text-sm font-semibold flex items-center gap-2">Kinyara<sup style="font-size:0.6em;vertical-align:super">®</sup> <span class="text-[9px] font-bold px-1.5 py-0.5 rounded-full text-white" style="background-color:#CC7722;">Soon</span></a>
+                <a href="<?php echo esc_url($kinyara_url); ?>" class="block py-2 text-sm font-semibold flex items-center gap-2">Kynara<sup style="font-size:0.6em;vertical-align:super">®</sup> <span class="text-[9px] font-bold px-1.5 py-0.5 rounded-full text-white" style="background-color:#CC7722;">Soon</span></a>
             </div>
             <a href="<?php echo esc_url($about_url); ?>"   class="block py-2 text-sm font-semibold"><?php _e('About Us', 'motion-informatics'); ?></a>
             <a href="<?php echo esc_url($news_url); ?>"    class="block py-2 text-sm font-semibold"><?php _e('Insights', 'motion-informatics'); ?></a>
