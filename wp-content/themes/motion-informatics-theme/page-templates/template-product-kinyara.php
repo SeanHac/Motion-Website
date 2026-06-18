@@ -222,17 +222,23 @@ get_header(); ?>
                     ['label'=>'Clinicians',           'title'=>'Clinicians',           'btn_text'=>'Join our Advisory Network', 'url'=>'#'],
                 ];
             }
-            foreach ($ky_cta_cards as $card) :
+            foreach ($ky_cta_cards as $i => $card) :
                 $card_url = $card['url'] ?? '#';
             ?>
-            <div class="rounded-2xl p-8 text-left" style="background-color:rgba(255,255,255,0.08);">
-                <p class="text-xs font-bold uppercase tracking-widest mb-4" style="color:#2D9DA8;"><?php echo esc_html($card['label'] ?? ''); ?></p>
+            <div class="rounded-2xl p-8 text-center flex items-center justify-center" style="background-color:rgba(255,255,255,0.08);">
+                <?php if ($i === 0) : ?>
                 <a href="<?php echo esc_url($card_url); ?>"
-                   class="inline-flex items-center gap-2 font-bold hover:gap-3 transition-all"
+                   class="inline-flex min-w-[180px] items-center justify-center rounded-xl h-12 px-6 font-bold text-sm shadow-lg hover:-translate-y-0.5 transition-all"
+                   style="background-color:#2D9DA8;color:#fff;">
+                    <?php echo esc_html($card['btn_text'] ?? ''); ?>
+                </a>
+                <?php else : ?>
+                <a href="<?php echo esc_url($card_url); ?>"
+                   class="inline-flex min-w-[180px] items-center justify-center rounded-xl h-12 px-6 font-bold text-sm border-2 border-white/30 hover:bg-white/10 transition-all"
                    style="color:#fff;">
                     <?php echo esc_html($card['btn_text'] ?? ''); ?>
-                    <span class="material-symbols-outlined text-base" aria-hidden="true">arrow_forward</span>
                 </a>
+                <?php endif; ?>
             </div>
             <?php endforeach; ?>
         </div>
