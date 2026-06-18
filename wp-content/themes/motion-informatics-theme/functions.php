@@ -694,6 +694,46 @@ function mi_register_acf_fields() {
         'menu_order'=>0,'position'=>'normal','style'=>'default','label_placement'=>'top','instruction_placement'=>'label',
     ]);
 
+    // ── PRODUCT: KINYARA ───────────────────────────────────────────────────────
+    acf_add_local_field_group([
+        'key'    => 'group_mi_product_kinyara',
+        'title'  => 'Kinyara Product Content',
+        'fields' => [
+            // Tab: Hero
+            ['key'=>'field_ky_tab_hero','label'=>'Hero Section','name'=>'','type'=>'tab','placement'=>'top','endpoint'=>0],
+            ['key'=>'field_ky_badge',         'label'=>'Hero Badge',         'name'=>'ky_badge',         'type'=>'text','default_value'=>'In Development'],
+            ['key'=>'field_ky_heading',       'label'=>'Hero Heading',       'name'=>'ky_heading',       'type'=>'text','default_value'=>'Axionis–Kynara'],
+            ['key'=>'field_ky_subheading',    'label'=>'Hero Subheading',    'name'=>'ky_subheading',    'type'=>'text','default_value'=>'The Future of Predictive Neurorehabilitation'],
+            ['key'=>'field_ky_desc',          'label'=>'Hero Description',   'name'=>'ky_desc',          'type'=>'textarea','rows'=>4,'default_value'=>'Axionis–Kynara is a next-generation neurorehabilitation platform designed to transform the way patients recover from stroke, spinal cord injury, traumatic brain injury, and other neurological disorders. By combining AI, AR, FES, NMES, real-time biofeedback, and BioRhythmIQ® technology, Axionis-Kynara delivers a new level of personalized rehabilitation that adapts continuously to each patient\'s neurological condition and recovery progress.'],
+            ['key'=>'field_ky_image',         'label'=>'Hero Image',         'name'=>'ky_image',         'type'=>'image','return_format'=>'url','preview_size'=>'mi-product'],
+            ['key'=>'field_ky_image_alt',     'label'=>'Hero Image Alt Text','name'=>'ky_image_alt',     'type'=>'text','default_value'=>'Axionis–Kynara — predictive neurorehabilitation platform'],
+            ['key'=>'field_ky_video_btn_text','label'=>'"Watch the Video" Button Text','name'=>'ky_video_btn_text','type'=>'text','default_value'=>'Watch the video'],
+            ['key'=>'field_ky_btn1_text',     'label'=>'Button 1 Text',      'name'=>'ky_btn1_text',     'type'=>'text','default_value'=>'Request our Deck'],
+            ['key'=>'field_ky_btn1_url',      'label'=>'Button 1 URL',       'name'=>'ky_btn1_url',      'type'=>'url'],
+            // Tab: Video
+            ['key'=>'field_ky_tab_video','label'=>'Video Section','name'=>'','type'=>'tab','placement'=>'top','endpoint'=>0],
+            ['key'=>'field_ky_video_label',   'label'=>'Section Eyebrow',    'name'=>'ky_video_label',   'type'=>'text','default_value'=>'Video'],
+            ['key'=>'field_ky_hero_video',    'label'=>'Video (MP4 or YouTube URL)','name'=>'ky_hero_video','type'=>'url'],
+            // Tab: Differentiator
+            ['key'=>'field_ky_tab_diff','label'=>'Differentiator','name'=>'','type'=>'tab','placement'=>'top','endpoint'=>0],
+            ['key'=>'field_ky_diff_label',    'label'=>'Section Eyebrow',    'name'=>'ky_diff_label',    'type'=>'text','default_value'=>'Differentiator'],
+            ['key'=>'field_ky_diff_heading',  'label'=>'Heading',            'name'=>'ky_diff_heading',  'type'=>'text','default_value'=>'Predictive, not reactive'],
+            ['key'=>'field_ky_diff_quote',    'label'=>'Highlighted Quote',  'name'=>'ky_diff_quote',    'type'=>'textarea','rows'=>3,'default_value'=>'Unlike conventional rehabilitation systems that respond only after movement occurs, Axionis-Kynara is being developed to decode patient intent in real time and deliver predictive stimulation before movement is fully expressed.'],
+            // Tab: Core Features
+            ['key'=>'field_ky_tab_features','label'=>'Core Features','name'=>'','type'=>'tab','placement'=>'top','endpoint'=>0],
+            ['key'=>'field_ky_features_label','label'=>'Section Eyebrow',   'name'=>'ky_features_label','type'=>'text','default_value'=>'Core Features — Feature / Benefit'],
+            // Tab: Who Is It For
+            ['key'=>'field_ky_tab_audience','label'=>'Who Is It For','name'=>'','type'=>'tab','placement'=>'top','endpoint'=>0],
+            ['key'=>'field_ky_audience_label','label'=>'Section Eyebrow',   'name'=>'ky_audience_label','type'=>'text','default_value'=>'Who Is Kynara For?'],
+            // Tab: CTA
+            ['key'=>'field_ky_tab_cta','label'=>'CTA Section','name'=>'','type'=>'tab','placement'=>'top','endpoint'=>0],
+            ['key'=>'field_ky_cta_heading', 'label'=>'CTA Heading',     'name'=>'ky_cta_heading', 'type'=>'text','default_value'=>'Be part of the future'],
+            ['key'=>'field_ky_cta_desc',    'label'=>'CTA Description', 'name'=>'ky_cta_desc',    'type'=>'textarea','rows'=>2,'default_value'=>'Kynara is currently in development. Join us early.'],
+        ],
+        'location'=> [[['param'=>'page_template','operator'=>'==','value'=>'page-templates/template-product-kinyara.php']]],
+        'menu_order'=>0,'position'=>'normal','style'=>'default','label_placement'=>'top','instruction_placement'=>'label',
+    ]);
+
     // ── NEWS / INSIGHTS HUB PAGE ───────────────────────────────────────────────
     acf_add_local_field_group([
         'key'    => 'group_mi_news',
