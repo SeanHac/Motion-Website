@@ -223,7 +223,7 @@ function mi_register_acf_fields() {
             ['key'=>'field_home_hero_heading2', 'label'=>'Hero Heading Accent','name'=>'home_hero_heading2','type'=>'text', 'default_value'=>'Motion Informatics'],
             ['key'=>'field_home_hero_desc',     'label'=>'Hero Description', 'name'=>'home_hero_desc',     'type'=>'textarea','rows'=>3, 'default_value'=>'Proudly Empowering Lives Through Innovation. Developing the next generation of clinical technology for better recovery.'],
             ['key'=>'field_home_hero_btn1_text','label'=>'Hero Button 1 Text','name'=>'home_hero_btn1_text','type'=>'text', 'default_value'=>'View Products'],
-            ['key'=>'field_home_hero_btn1_url', 'label'=>'Hero Button 1 URL', 'name'=>'home_hero_btn1_url', 'type'=>'url'],
+            ['key'=>'field_home_hero_btn1_url', 'label'=>'Hero Button 1 URL', 'name'=>'home_hero_btn1_url', 'type'=>'text', 'instructions'=>'Full URL (https://...) or an in-page anchor like #products-heading'],
             ['key'=>'field_home_hero_btn2_text','label'=>'Hero Button 2 Text','name'=>'home_hero_btn2_text','type'=>'text', 'default_value'=>'Learn More'],
             ['key'=>'field_home_hero_btn2_url', 'label'=>'Hero Button 2 URL', 'name'=>'home_hero_btn2_url', 'type'=>'url'],
             ['key'=>'field_home_hero_bg',       'label'=>'Hero Background Image','name'=>'home_hero_bg',   'type'=>'image', 'return_format'=>'url', 'preview_size'=>'medium'],
@@ -722,9 +722,7 @@ function mi_register_acf_fields() {
             // Tab: Core Features
             ['key'=>'field_ky_tab_features','label'=>'Core Features','name'=>'','type'=>'tab','placement'=>'top','endpoint'=>0],
             ['key'=>'field_ky_features_label','label'=>'Section Eyebrow',   'name'=>'ky_features_label','type'=>'text','default_value'=>'Core Features — Feature / Benefit'],
-            // Tab: Who Is It For
-            ['key'=>'field_ky_tab_audience','label'=>'Who Is It For','name'=>'','type'=>'tab','placement'=>'top','endpoint'=>0],
-            ['key'=>'field_ky_audience_label','label'=>'Section Eyebrow',   'name'=>'ky_audience_label','type'=>'text','default_value'=>'Who Is Kynara For?'],
+            ['key'=>'field_ky_features_heading','label'=>'Section Heading', 'name'=>'ky_features_heading','type'=>'text','default_value'=>'What Makes Axionis–Kynara Different'],
             // Tab: CTA
             ['key'=>'field_ky_tab_cta','label'=>'CTA Section','name'=>'','type'=>'tab','placement'=>'top','endpoint'=>0],
             ['key'=>'field_ky_cta_heading', 'label'=>'CTA Heading',     'name'=>'ky_cta_heading', 'type'=>'text','default_value'=>'Be part of the future'],
@@ -1036,6 +1034,33 @@ function mi_handle_contact_form() {
     } else {
         wp_send_json_error(['message' => __('Failed to send message. Please try again.', 'motion-informatics')]);
     }
+}
+
+// ─── KYNARA CTA BUTTON CLICK NOTIFICATION ────────────────────────────────────
+
+add_action('wp_ajax_mi_kynara_cta_click',        'mi_handle_kynara_cta_click');
+add_action('wp_ajax_nopriv_mi_kynara_cta_click', 'mi_handle_kynara_cta_click');
+function mi_handle_kynara_cta_click() {
+    check_ajax_referer('mi_form_nonce', 'nonce');
+
+    $button_text = sanitize_text_field($_POST['button_text'] ?? 'Kynara CTA button');
+    $source_page = esc_url_raw($_POST['source_page'] ?? '');
+    $ip          = sanitize_text_field($_SERVER['REMOTE_ADDR'] ?? '');
+    $user_agent  = sanitize_text_field($_SERVER['HTTP_USER_AGENT'] ?? '');
+
+    $to      = 'gary@motioninformatics.ai';
+    $subject = '[Kynara] Someone clicked "' . $button_text . '"';
+    $body    = "A visitor clicked the \"{$button_text}\" button on the Kynara page.\n\n"
+             . "Page: {$source_page}\n"
+             . "Time: " . date('Y-m-d H:i:s') . "\n"
+             . "IP Address: {$ip}\n"
+             . "Browser: {$user_agent}\n\n"
+             . "Note: this confirms a click happened, not who clicked it — that information\n"
+             . "only becomes available if they go on to submit the Contact form.";
+
+    wp_mail($to, $subject, $body);
+
+    wp_send_json_success();
 }
 
 // ─── DISTRIBUTOR FORM AJAX ───────────────────────────────────────────────────

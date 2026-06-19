@@ -3,6 +3,13 @@
    Supplements Tailwind CSS (loaded via CDN)
 ═══════════════════════════════════════════════════════════════════════════ */
 
+/* ── SMOOTH ANCHOR SCROLLING ──────────────────────────────────────────────── */
+/* scroll-padding-top keeps the destination clear of the fixed h-20 header */
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 6rem;
+}
+
 /* ── FONTS ─────────────────────────────────────────────────────────────────── */
 body {
     font-family: 'Inter', sans-serif;

@@ -136,7 +136,7 @@ get_header(); ?>
                 <?php echo esc_html(mi_field('ky_features_label', false, 'Core Features — Feature / Benefit')); ?>
             </p>
             <h2 id="ky-features-heading" class="text-3xl font-black text-[#3f3e6f] dark:text-white">
-                <?php _e('What Makes Axionis–Kynara Different', 'motion-informatics'); ?>
+                <?php echo esc_html(mi_field('ky_features_heading', false, 'What Makes Axionis–Kynara Different')); ?>
             </h2>
         </div>
 
@@ -167,52 +167,18 @@ get_header(); ?>
 </section>
 
 <!-- ═══════════════════════════════════════════════════════════════════════════
-     WHO IS KYNARA FOR?
-═══════════════════════════════════════════════════════════════════════════ -->
-<section class="py-24 bg-white dark:bg-[#16161c]" aria-labelledby="ky-audience-heading">
-    <div class="max-w-7xl mx-auto px-6">
-        <div class="text-center mb-12">
-            <h2 id="ky-audience-heading" class="text-3xl font-black text-[#3f3e6f] dark:text-white">
-                <?php echo esc_html(mi_field('ky_audience_label', false, 'Who Is Kynara For?')); ?>
-            </h2>
-        </div>
-
-        <ul class="grid grid-cols-1 md:grid-cols-3 gap-6 list-none" role="list">
-            <?php
-            $ky_audiences_raw = get_post_meta(get_the_ID(), 'ky_audiences_json', true);
-            $ky_audiences     = $ky_audiences_raw ? json_decode($ky_audiences_raw, true) : null;
-            if (empty($ky_audiences)) {
-                $ky_audiences = [
-                    ['icon'=>'trending_up',      'title'=>'Investors',            'desc'=>'Large addressable market, differentiated technology, and a proven track record.'],
-                    ['icon'=>'handshake',        'title'=>'Influencers & Partners','desc'=>'Early partnership ahead of launch on a scalable platform.'],
-                    ['icon'=>'medical_services', 'title'=>'Clinicians',           'desc'=>'Advisory network with real influence and a voice in development.'],
-                ];
-            }
-            foreach ($ky_audiences as $a) :
-            ?>
-            <li class="group p-8 rounded-2xl border border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-800 shadow-sm hover:shadow-lg transition-all duration-300">
-                <span class="material-symbols-outlined text-4xl mb-4 block group-hover:scale-110 transition-transform" style="color:#2D9DA8;" aria-hidden="true"><?php echo esc_html($a['icon'] ?? 'star'); ?></span>
-                <h3 class="font-bold text-lg text-[#3f3e6f] dark:text-white mb-3"><?php echo esc_html($a['title'] ?? ''); ?></h3>
-                <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed"><?php echo esc_html($a['desc'] ?? ''); ?></p>
-            </li>
-            <?php endforeach; ?>
-        </ul>
-    </div>
-</section>
-
-<!-- ═══════════════════════════════════════════════════════════════════════════
      CTA — BE PART OF THE FUTURE
 ═══════════════════════════════════════════════════════════════════════════ -->
-<section class="py-24 text-white" style="background-color:#3f3e6f;" aria-labelledby="ky-cta-heading">
+<section class="py-12 text-white" style="background-color:#3f3e6f;" aria-labelledby="ky-cta-heading">
     <div class="max-w-7xl mx-auto px-6 text-center">
         <h2 id="ky-cta-heading" class="text-4xl font-black mb-4">
             <?php echo esc_html(mi_field('ky_cta_heading', false, 'Be part of the future')); ?>
         </h2>
-        <p class="text-white/80 text-lg mb-12 max-w-2xl mx-auto">
+        <p class="text-white/80 text-lg mb-8 max-w-2xl mx-auto">
             <?php echo esc_html(mi_field('ky_cta_desc', false, 'Kynara is currently in development. Join us early.')); ?>
         </p>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto">
+        <div class="flex flex-wrap items-center justify-center gap-4">
             <?php
             $ky_cta_cards_raw = get_post_meta(get_the_ID(), 'ky_cta_cards_json', true);
             $ky_cta_cards     = $ky_cta_cards_raw ? json_decode($ky_cta_cards_raw, true) : null;
@@ -225,21 +191,19 @@ get_header(); ?>
             foreach ($ky_cta_cards as $i => $card) :
                 $card_url = $card['url'] ?? '#';
             ?>
-            <div class="rounded-2xl p-8 text-center flex items-center justify-center" style="background-color:rgba(255,255,255,0.08);">
-                <?php if ($i === 0) : ?>
-                <a href="<?php echo esc_url($card_url); ?>"
-                   class="inline-flex min-w-[180px] items-center justify-center rounded-xl h-12 px-6 font-bold text-sm shadow-lg hover:-translate-y-0.5 transition-all"
-                   style="background-color:#2D9DA8;color:#fff;">
-                    <?php echo esc_html($card['btn_text'] ?? ''); ?>
-                </a>
-                <?php else : ?>
-                <a href="<?php echo esc_url($card_url); ?>"
-                   class="inline-flex min-w-[180px] items-center justify-center rounded-xl h-12 px-6 font-bold text-sm border-2 border-white/30 hover:bg-white/10 transition-all"
-                   style="color:#fff;">
-                    <?php echo esc_html($card['btn_text'] ?? ''); ?>
-                </a>
-                <?php endif; ?>
-            </div>
+            <?php if ($i === 0) : ?>
+            <a href="<?php echo esc_url($card_url); ?>"
+               class="mi-notify-click inline-flex min-w-[180px] items-center justify-center rounded-xl h-12 px-6 font-bold text-sm shadow-lg hover:-translate-y-0.5 transition-all"
+               style="background-color:#2D9DA8;color:#fff;">
+                <?php echo esc_html($card['btn_text'] ?? ''); ?>
+            </a>
+            <?php else : ?>
+            <a href="<?php echo esc_url($card_url); ?>"
+               class="inline-flex min-w-[180px] items-center justify-center rounded-xl h-12 px-6 font-bold text-sm border-2 border-white/30 hover:bg-white/10 transition-all"
+               style="color:#fff;">
+                <?php echo esc_html($card['btn_text'] ?? ''); ?>
+            </a>
+            <?php endif; ?>
             <?php endforeach; ?>
         </div>
     </div>

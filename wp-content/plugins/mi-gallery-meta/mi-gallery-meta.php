@@ -189,18 +189,6 @@ add_action('add_meta_boxes', function () {
             ]);
         }, 'page', 'normal', 'high');
 
-        add_meta_box('mi_ky_audiences', '👥 Audience Cards — Kinyara', function ($post) {
-            mi_repeater_metabox($post->ID, 'ky_audiences_json', [
-                ['name'=>'icon',  'label'=>'Icon (Material Symbol)', 'type'=>'text',     'placeholder'=>'trending_up', 'wide'=>false],
-                ['name'=>'title', 'label'=>'Title',                  'type'=>'text',     'placeholder'=>'',            'wide'=>false],
-                ['name'=>'desc',  'label'=>'Description',            'type'=>'textarea', 'placeholder'=>'',            'wide'=>true],
-            ], [
-                ['icon'=>'trending_up',      'title'=>'Investors',             'desc'=>'Large addressable market, differentiated technology, and a proven track record.'],
-                ['icon'=>'handshake',        'title'=>'Influencers & Partners','desc'=>'Early partnership ahead of launch on a scalable platform.'],
-                ['icon'=>'medical_services', 'title'=>'Clinicians',            'desc'=>'Advisory network with real influence and a voice in development.'],
-            ]);
-        }, 'page', 'normal', 'high');
-
         add_meta_box('mi_ky_cta_cards', '📇 CTA Contact Cards — Kinyara', function ($post) {
             mi_repeater_metabox($post->ID, 'ky_cta_cards_json', [
                 ['name'=>'label',    'label'=>'Audience Label', 'type'=>'text', 'placeholder'=>'', 'wide'=>false],
@@ -683,7 +671,7 @@ add_action('save_post', function ($post_id) {
     $repeaters = [
         's3_benefits_json', 's3_differentiators_json', 's3_stats_json', 's3_specs_json', 's3_bio_bullets_json',
         'sp_immersive_bullets_json', 'sp_challenge_stats_json', 'sp_how_steps_json', 'sp_ai_cards_json', 'sp_specs_json',
-        'ky_tags_json', 'ky_features_json', 'ky_audiences_json', 'ky_cta_cards_json',
+        'ky_tags_json', 'ky_features_json', 'ky_cta_cards_json',
         'home_capabilities_json', 'home_products_json',
         'dist_benefits_json', 'dist_resources_json',
         'about_milestones_json', 'about_pillars_json', 'about_technologies_json', 'about_culture_json',
