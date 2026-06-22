@@ -7,6 +7,25 @@
 (function () {
     'use strict';
 
+    // ── REFERRER TRACKING ─────────────────────────────────────────────────────
+    // Records which page the visitor came FROM before they open Contact Us.
+    // Stored in sessionStorage and written into the hidden source_page field
+    // at form submit time, so Monday CRM receives the true originating page.
+    (function () {
+        if (document.referrer) {
+            try {
+                var refHost = new URL(document.referrer).hostname;
+                if (refHost === window.location.hostname) {
+                    sessionStorage.setItem('mi_source_page', document.referrer);
+                }
+            } catch (e) {}
+        }
+        if (!sessionStorage.getItem('mi_source_page')) {
+            sessionStorage.setItem('mi_source_page', window.location.href);
+        }
+    })();
+
+
     // ── DARK MODE DISABLED — always light ─────────────────────────────────────
 
     const html = document.documentElement;
@@ -296,6 +315,10 @@
             submitBtn.disabled = true;
             submitBtn.textContent = 'Sending...';
 
+            // Fill source_page with the page the user navigated FROM
+            var srcField = contactForm.querySelector('[name="source_page"]');
+            if (srcField) srcField.value = sessionStorage.getItem('mi_source_page') || document.referrer || window.location.href;
+
             const formData = new FormData(contactForm);
             formData.append('action', 'mi_contact_form');
             formData.append('nonce', (typeof MI !== 'undefined') ? MI.nonce : '');
@@ -332,6 +355,10 @@
             const submitBtn = distForm.querySelector('[type="submit"]');
             if (!validateForm(distForm)) return;
             submitBtn.disabled = true;
+
+            // Fill source_page with the page the user navigated FROM
+            var srcFieldDist = distForm.querySelector('[name="source_page"]');
+            if (srcFieldDist) srcFieldDist.value = sessionStorage.getItem('mi_source_page') || document.referrer || window.location.href;
 
             const formData = new FormData(distForm);
             // Route through the same Contact handler so payload + webhook are identical.

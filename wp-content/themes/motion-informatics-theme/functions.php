@@ -1029,6 +1029,7 @@ function mi_handle_contact_form() {
     ]);
     mi_save_lead($payload);
     mi_send_webhook($payload);
+    mi_send_monday($payload);
 
     if ($sent) {
         wp_send_json_success(['message' => __('Your message has been sent successfully!', 'motion-informatics')]);
@@ -1106,6 +1107,7 @@ function mi_handle_distributor_form() {
     ];
     mi_save_lead($payload);
     mi_send_webhook($payload);
+    mi_send_monday($payload);
 
     if ($sent) {
         wp_send_json_success(['message' => __('Thank you! We will connect you with a local representative.', 'motion-informatics')]);
@@ -1179,6 +1181,10 @@ function mi_webhook_settings_page() {
         update_option('mi_recaptcha_site', $recaptcha_site);
         $recipients_raw = wp_unslash($_POST['mi_form_recipients'] ?? '');
         update_option('mi_form_recipients', mi_normalize_recipient_list($recipients_raw));
+        $monday_token    = sanitize_text_field($_POST['mi_monday_token']    ?? '');
+        update_option('mi_monday_token', $monday_token);
+        $monday_board_id = sanitize_text_field($_POST['mi_monday_board_id'] ?? '');
+        update_option('mi_monday_board_id', $monday_board_id);
         echo '<div class="notice notice-success is-dismissible"><p>' . __('Settings saved.', 'motion-informatics') . '</p></div>';
     }
 
@@ -1187,6 +1193,8 @@ function mi_webhook_settings_page() {
     $recaptcha_secret = get_option('mi_recaptcha_secret', '');
     $recaptcha_site   = get_option('mi_recaptcha_site', '');
     $form_recipients  = get_option('mi_form_recipients', mi_default_form_recipients());
+    $monday_token     = get_option('mi_monday_token', '');
+    $monday_board_id  = get_option('mi_monday_board_id', '');
     ?>
     <div class="wrap">
         <h1 style="display:flex;align-items:center;gap:10px;">
@@ -1211,8 +1219,37 @@ function mi_webhook_settings_page() {
                 </tr>
             </table>
 
-            <h2><?php _e('CRM Webhook', 'motion-informatics'); ?></h2>
+            <h2><?php _e('Monday CRM (Direct)', 'motion-informatics'); ?></h2>
+            <p class="description"><?php _e('When both fields below are filled in, every form submission creates a lead directly in Monday CRM — including the page the user came from. No Zapier needed.', 'motion-informatics'); ?></p>
+            <?php if ($monday_token && $monday_board_id) : ?>
+            <div style="background:#edf7ed;border:1px solid #4caf50;border-radius:6px;padding:12px 16px;margin:12px 0;display:flex;align-items:center;gap:8px;">
+                <span class="dashicons dashicons-yes-alt" style="color:#4caf50;"></span>
+                <strong><?php _e('Monday CRM is active.', 'motion-informatics'); ?></strong>
+                <?php _e('Leads will be sent directly to your Monday board.', 'motion-informatics'); ?>
+            </div>
+            <?php endif; ?>
             <table class="form-table" role="presentation">
+                <tr>
+                    <th scope="row"><label for="mi_monday_token"><?php _e('Monday API Token', 'motion-informatics'); ?></label></th>
+                    <td>
+                        <input type="text" id="mi_monday_token" name="mi_monday_token"
+                               value="<?php echo esc_attr($monday_token); ?>"
+                               class="large-text" placeholder="eyJhbGci...">
+                        <p class="description"><?php _e('Monday.com → click your avatar (bottom-left) → Developers → My Access Tokens.', 'motion-informatics'); ?></p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="mi_monday_board_id"><?php _e('Monday Board ID', 'motion-informatics'); ?></label></th>
+                    <td>
+                        <input type="text" id="mi_monday_board_id" name="mi_monday_board_id"
+                               value="<?php echo esc_attr($monday_board_id); ?>"
+                               class="large-text" placeholder="1234567890">
+                        <p class="description"><?php _e('Open your Monday board → copy the number from the URL: monday.com/boards/XXXXXXXXXX', 'motion-informatics'); ?></p>
+                    </td>
+                </tr>
+            </table>
+
+            <h2><?php _e('CRM Webhook', 'motion-informatics'); ?></h2>            <table class="form-table" role="presentation">
                 <tr>
                     <th scope="row"><label for="mi_webhook_enabled"><?php _e('Enable Webhook', 'motion-informatics'); ?></label></th>
                     <td>
@@ -1309,6 +1346,59 @@ function mi_webhook_settings_page() {
         <?php endif; ?>
     </div>
     <?php
+}
+
+// ─── MONDAY CRM — DIRECT API ─────────────────────────────────────────────────
+
+/**
+ * Send a lead directly to Monday CRM via its GraphQL API.
+ * Requires mi_monday_token and mi_monday_board_id set in Settings → CRM Webhook.
+ *
+ * Column IDs used (adjust to match your board):
+ *   email     → Email column
+ *   phone     → Phone column
+ *   text      → Text column  (mapped to "Came from page" / source_page)
+ *   long_text → Long Text column (message)
+ *   status    → Status column (patient / professional / distributor)
+ */
+function mi_send_monday(array $data): bool {
+    $token    = get_option('mi_monday_token', '');
+    $board_id = (int) get_option('mi_monday_board_id', 0);
+
+    if (!$token || !$board_id) return false;
+
+    $first = trim((string)($data['first_name'] ?? ''));
+    $last  = trim((string)($data['last_name']  ?? ''));
+    $name  = trim($first . ' ' . $last) ?: ($data['email'] ?? 'New Lead');
+
+    $column_values = wp_json_encode([
+        'email'     => ['email' => $data['email'] ?? '', 'text' => $data['email'] ?? ''],
+        'phone'     => ['phone' => $data['phone'] ?? '', 'countryShortName' => 'IL'],
+        'text'      => $data['source_page'] ?? '',
+        'long_text' => ['text' => $data['message'] ?? ''],
+        'status'    => ['label' => ucfirst($data['user_type'] ?? 'patient')],
+    ]);
+
+    $mutation = sprintf(
+        'mutation { create_item (board_id: %d, item_name: %s, column_values: %s) { id } }',
+        $board_id,
+        json_encode($name),
+        json_encode($column_values)
+    );
+
+    $response = wp_remote_post('https://api.monday.com/v2', [
+        'headers' => [
+            'Authorization' => $token,
+            'Content-Type'  => 'application/json',
+            'API-Version'   => '2024-01',
+        ],
+        'body'    => wp_json_encode(['query' => $mutation]),
+        'timeout' => 15,
+    ]);
+
+    if (is_wp_error($response)) return false;
+    $body = json_decode(wp_remote_retrieve_body($response), true);
+    return !empty($body['data']['create_item']['id']);
 }
 
 /**
