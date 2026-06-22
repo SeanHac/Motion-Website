@@ -109,20 +109,22 @@ get_header(); ?>
 <!-- ═══════════════════════════════════════════════════════════════════════════
      DIFFERENTIATOR
 ═══════════════════════════════════════════════════════════════════════════ -->
-<section class="py-20 bg-white dark:bg-[#16161c]" aria-labelledby="ky-diff-heading">
-    <div class="max-w-[1280px] mx-auto px-6">
-        <p class="text-xs font-bold uppercase tracking-widest mb-3" style="color:#2D9DA8;">
+<section class="relative py-32 overflow-hidden flex items-center justify-center text-center px-6" aria-labelledby="ky-diff-heading">
+    <?php $ky_diff_bg = mi_field('ky_diff_bg'); ?>
+    <div class="absolute inset-0"
+         style="<?php echo $ky_diff_bg ? 'background-image: linear-gradient(rgba(63,62,111,0.85),rgba(19,19,22,0.9)), url(' . esc_url($ky_diff_bg) . '); background-size: cover; background-position: center;' : 'background: linear-gradient(135deg, #3f3e6f 0%, #16161c 100%);'; ?>"
+         aria-hidden="true">
+    </div>
+    <div class="relative z-10 max-w-4xl">
+        <p class="text-xs font-bold uppercase tracking-widest mb-4" style="color:#2D9DA8;">
             <?php echo esc_html(mi_field('ky_diff_label', false, 'Differentiator')); ?>
         </p>
-        <h2 id="ky-diff-heading" class="text-3xl font-black text-[#3f3e6f] dark:text-white mb-6">
+        <h2 id="ky-diff-heading" class="text-4xl md:text-6xl font-black text-white mb-8 leading-tight">
             <?php echo esc_html(mi_field('ky_diff_heading', false, 'Predictive, not reactive')); ?>
         </h2>
-        <blockquote class="rounded-2xl p-8 max-w-3xl"
-                    style="background-color:rgba(63,62,111,0.06);border-left:4px solid #3f3e6f;">
-            <p class="text-lg italic text-[#3f3e6f] dark:text-gray-200 leading-relaxed">
-                <?php echo esc_html(mi_field('ky_diff_quote', false, 'Unlike conventional rehabilitation systems that respond only after movement occurs, Axionis-Kynara is being developed to decode patient intent in real time and deliver predictive stimulation before movement is fully expressed.')); ?>
-            </p>
-        </blockquote>
+        <p class="text-white/80 text-xl mb-10 max-w-2xl mx-auto leading-relaxed">
+            <?php echo esc_html(mi_field('ky_diff_quote', false, 'Unlike conventional rehabilitation systems that respond only after movement occurs, Axionis-Kynara is being developed to decode patient intent in real time and deliver predictive stimulation before movement is fully expressed.')); ?>
+        </p>
     </div>
 </section>
 

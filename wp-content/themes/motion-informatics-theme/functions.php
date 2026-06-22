@@ -719,6 +719,7 @@ function mi_register_acf_fields() {
             ['key'=>'field_ky_diff_label',    'label'=>'Section Eyebrow',    'name'=>'ky_diff_label',    'type'=>'text','default_value'=>'Differentiator'],
             ['key'=>'field_ky_diff_heading',  'label'=>'Heading',            'name'=>'ky_diff_heading',  'type'=>'text','default_value'=>'Predictive, not reactive'],
             ['key'=>'field_ky_diff_quote',    'label'=>'Highlighted Quote',  'name'=>'ky_diff_quote',    'type'=>'textarea','rows'=>3,'default_value'=>'Unlike conventional rehabilitation systems that respond only after movement occurs, Axionis-Kynara is being developed to decode patient intent in real time and deliver predictive stimulation before movement is fully expressed.'],
+            ['key'=>'field_ky_diff_bg',       'label'=>'Background Image (optional)','name'=>'ky_diff_bg','type'=>'image','return_format'=>'url','preview_size'=>'mi-hero','instructions'=>'Leave empty to use the default navy gradient background.'],
             // Tab: Core Features
             ['key'=>'field_ky_tab_features','label'=>'Core Features','name'=>'','type'=>'tab','placement'=>'top','endpoint'=>0],
             ['key'=>'field_ky_features_label','label'=>'Section Eyebrow',   'name'=>'ky_features_label','type'=>'text','default_value'=>'Core Features — Feature / Benefit'],
