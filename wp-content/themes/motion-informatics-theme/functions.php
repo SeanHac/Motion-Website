@@ -1372,11 +1372,11 @@ function mi_send_monday(array $data): bool {
     $name  = trim($first . ' ' . $last) ?: ($data['email'] ?? 'New Lead');
 
     $column_values = wp_json_encode([
-        'email'     => ['email' => $data['email'] ?? '', 'text' => $data['email'] ?? ''],
-        'phone'     => ['phone' => $data['phone'] ?? '', 'countryShortName' => 'IL'],
-        'text'      => $data['source_page'] ?? '',
-        'long_text' => ['text' => $data['message'] ?? ''],
-        'status'    => ['label' => ucfirst($data['user_type'] ?? 'patient')],
+        'email_mm4kfk78'     => ['email' => $data['email'] ?? '', 'text' => $data['email'] ?? ''],
+        'phone_mm4kr8xf'     => ['phone' => $data['phone'] ?? '', 'countryShortName' => 'IL'],
+        'text_mm4kxz6x'      => $data['source_page'] ?? '',
+        'long_text_mm4ktjh9' => ['text' => $data['message'] ?? ''],
+        'date4'              => ['date' => date('Y-m-d')],
     ]);
 
     $mutation = sprintf(
