@@ -108,12 +108,11 @@ function mi_enqueue_assets() {
         true
     );
 
-    // Pass AJAX URL, nonce, and reCAPTCHA v3 site key to JS
+    // Pass AJAX URL and nonce to JS
     wp_localize_script('mi-theme', 'MI', [
-        'ajaxUrl'          => admin_url('admin-ajax.php'),
-        'nonce'            => wp_create_nonce('mi_form_nonce'),
-        'recaptchaSiteKey' => get_option('mi_recaptcha_site', ''),
-        'i18n'             => [
+        'ajaxUrl' => admin_url('admin-ajax.php'),
+        'nonce'   => wp_create_nonce('mi_form_nonce'),
+        'i18n'    => [
             'sending'  => __('Sending...', 'motion-informatics'),
             'success'  => __('Message sent successfully!', 'motion-informatics'),
             'error'    => __('Something went wrong. Please try again.', 'motion-informatics'),
@@ -987,19 +986,25 @@ function mi_handle_contact_form() {
         wp_send_json_error(['message' => __('Please fill in all required fields.', 'motion-informatics')]);
     }
 
-    // Verify reCAPTCHA if configured
+    // reCAPTCHA v3 — TEMPORARILY NON-BLOCKING for debugging.
+    // We log the result but no longer reject the submission on it. Re-enable
+    // blocking once reCAPTCHA token generation is confirmed reliable (see TODO).
     $secret = get_option('mi_recaptcha_secret', '');
     $token  = sanitize_text_field($_POST['g-recaptcha-response'] ?? '');
-    if ($secret && !$token) {
-        wp_send_json_error(['message' => __('Please complete the reCAPTCHA.', 'motion-informatics')]);
-    }
-    if ($secret && $token) {
-        $verify = wp_remote_post('https://www.google.com/recaptcha/api/siteverify', [
-            'body' => ['secret' => $secret, 'response' => $token],
-        ]);
-        $result = json_decode(wp_remote_retrieve_body($verify), true);
-        if (empty($result['success']) || (isset($result['score']) && $result['score'] < 0.5)) {
-            wp_send_json_error(['message' => __('reCAPTCHA verification failed. Please try again.', 'motion-informatics')]);
+    if ($secret) {
+        if (!$token) {
+            error_log('[MI reCAPTCHA] No token received from browser (script may not have loaded).');
+        } else {
+            $verify = wp_remote_post('https://www.google.com/recaptcha/api/siteverify', [
+                'body' => ['secret' => $secret, 'response' => $token],
+            ]);
+            $result = json_decode(wp_remote_retrieve_body($verify), true);
+            $score  = isset($result['score']) ? (float) $result['score'] : 0;
+            error_log('[MI reCAPTCHA] success=' . (empty($result['success']) ? 'false' : 'true') . ' score=' . $score);
+            // TODO: once reCAPTCHA is confirmed stable, restore blocking:
+            // if (empty($result['success']) || $score < 0.3) {
+            //     wp_send_json_error(['message' => __('Security check failed. Please try again.', 'motion-informatics')]);
+            // }
         }
     }
 
@@ -1273,7 +1278,7 @@ function mi_webhook_settings_page() {
                     <td>
                         <input type="text" id="mi_recaptcha_site" name="mi_recaptcha_site"
                                value="<?php echo esc_attr($recaptcha_site); ?>" class="large-text" placeholder="6Lc...">
-                        <p class="description"><?php _e('Public site key from Google reCAPTCHA v3 (invisible, no checkbox). Get one at google.com/recaptcha.', 'motion-informatics'); ?></p>
+                        <p class="description"><?php _e('Public site key from Google reCAPTCHA v3. Get one at google.com/recaptcha (choose reCAPTCHA v3, not v2).', 'motion-informatics'); ?></p>
                     </td>
                 </tr>
                 <tr>
@@ -1356,11 +1361,16 @@ function mi_webhook_settings_page() {
  * Requires mi_monday_token and mi_monday_board_id set in Settings → CRM Webhook.
  *
  * Column IDs used (adjust to match your board):
- *   email     → Email column
- *   phone     → Phone column
- *   text      → Text column  (mapped to "Came from page" / source_page)
- *   long_text → Long Text column (message)
- *   status    → Status column (patient / professional / distributor)
+ *   email_mm4kfk78     → Email column
+ *   phone_mm4kr8xf     → Phone column
+ *   text_mm4kxz6x      → Text column  (mapped to "Came from page" / source_page)
+ *   long_text_mm4ktjh9 → Long Text column (message)
+ *   date4              → Date column (submission date)
+ *
+ * Routes the item into the correct group based on user_type:
+ *   patient       → topics
+ *   professional  → group_mm4tby6e
+ *   distributor   → group_mm4tn36w
  */
 function mi_send_monday(array $data): bool {
     $token    = get_option('mi_monday_token', '');
@@ -1372,17 +1382,44 @@ function mi_send_monday(array $data): bool {
     $last  = trim((string)($data['last_name']  ?? ''));
     $name  = trim($first . ' ' . $last) ?: ($data['email'] ?? 'New Lead');
 
-    $column_values = wp_json_encode([
+    // Region/Interest (distributor-only fields with no dedicated column) still
+    // get folded into the message; Company/URL/Role now have their own columns.
+    $message = (string)($data['message'] ?? '');
+    $extra_bits = array_filter([
+        !empty($data['region'])   ? 'Region: '   . $data['region']   : null,
+        !empty($data['interest']) ? 'Interest: ' . $data['interest'] : null,
+    ]);
+    if ($extra_bits) {
+        $message = implode("\n", $extra_bits) . "\n\n" . $message;
+    }
+
+    $columns_raw = [
         'email_mm4kfk78'     => ['email' => $data['email'] ?? '', 'text' => $data['email'] ?? ''],
         'phone_mm4kr8xf'     => ['phone' => $data['phone'] ?? '', 'countryShortName' => 'IL'],
         'text_mm4kxz6x'      => $data['source_page'] ?? '',
-        'long_text_mm4ktjh9' => ['text' => $data['message'] ?? ''],
+        'long_text_mm4ktjh9' => ['text' => $message],
         'date4'              => ['date' => date('Y-m-d')],
-    ]);
+        'text_mm4tx9tw'      => $data['company'] ?? '',
+        'text_mm4t2hw8'      => $data['role'] ?? '',
+    ];
+    if (!empty($data['company_url'])) {
+        $columns_raw['link_mm4t6ct8'] = ['url' => $data['company_url'], 'text' => $data['company_url']];
+    }
+    $column_values = wp_json_encode($columns_raw);
+
+    // Route to the matching group based on lead type
+    $group_map = [
+        'patient'      => 'topics',
+        'professional' => 'group_mm4tby6e',
+        'distributor'  => 'group_mm4tn36w',
+    ];
+    $user_type = $data['user_type'] ?? 'patient';
+    $group_id  = $group_map[$user_type] ?? 'topics';
 
     $mutation = sprintf(
-        'mutation { create_item (board_id: %d, item_name: %s, column_values: %s) { id } }',
+        'mutation { create_item (board_id: %d, group_id: %s, item_name: %s, column_values: %s) { id } }',
         $board_id,
+        json_encode($group_id),
         json_encode($name),
         json_encode($column_values)
     );

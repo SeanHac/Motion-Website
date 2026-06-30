@@ -282,13 +282,30 @@
         const sectionPro     = document.getElementById('mi-section-pro');
         const hiddenType     = document.getElementById('mi_hidden_user_type');
 
-        function miSwitchType(type) {
+        function miSwitchType(type, keepStatus) {
             const isPat = type === 'patient';
             sectionPatient.classList.toggle('hidden', !isPat);
             sectionPro.classList.toggle('hidden', isPat);
             sectionPatient.querySelectorAll('input,textarea,select').forEach(function(el){ el.disabled = !isPat; });
             sectionPro.querySelectorAll('input,textarea,select').forEach(function(el){ el.disabled = isPat; });
             if (hiddenType) hiddenType.value = type;
+
+            // Clear any leftover status message from a previous tab/submission
+            // (skipped when called right after a successful submit, so the
+            // success message stays visible instead of being wiped instantly)
+            if (!keepStatus) {
+                var statusEl = document.getElementById('contact-form-status');
+                if (statusEl) {
+                    statusEl.classList.add('hidden');
+                    statusEl.textContent = '';
+                }
+            }
+            // Clear leftover red-border invalid states from a previous failed validation
+            contactForm.querySelectorAll('[aria-invalid="true"]').forEach(function(el){
+                el.removeAttribute('aria-invalid');
+                el.classList.remove('border-red-500');
+            });
+
             // Update switcher button styles
             document.querySelectorAll('.mi-type-btn').forEach(function(btn){
                 const active = btn.dataset.type === type;
@@ -311,7 +328,21 @@
             e.preventDefault();
             const statusEl  = document.getElementById('contact-form-status');
             const submitBtn = contactForm.querySelector('[type="submit"]');
-            if (!validateForm(contactForm)) return;
+
+            // Auto-add https:// to the company URL if the user forgot it
+            // (avoids a confusing silent failure on type="url" validation)
+            var companyUrlField = contactForm.querySelector('#company_url');
+            if (companyUrlField && companyUrlField.value && !/^https?:\/\//i.test(companyUrlField.value)) {
+                companyUrlField.value = 'https://' + companyUrlField.value.trim();
+            }
+
+            if (!validateForm(contactForm)) {
+                var badField = contactForm.dataset.firstInvalidLabel;
+                showFormStatus(statusEl, false, badField
+                    ? 'Please check the "' + badField + '" field — it\'s missing or invalid.'
+                    : 'Please fill in all required fields.');
+                return;
+            }
             submitBtn.disabled = true;
             submitBtn.textContent = 'Sending...';
 
@@ -336,7 +367,7 @@
                     showFormStatus(statusEl, data.success, data.data ? data.data.message : '');
                     if (data.success) {
                         contactForm.reset();
-                        miSwitchType('patient');
+                        miSwitchType('patient', true);
                     }
                 })
                 .catch(function () {
@@ -449,17 +480,24 @@
     function validateForm(form) {
         const requiredFields = form.querySelectorAll('[required]');
         let valid = true;
+        let firstInvalidLabel = '';
         requiredFields.forEach(function (field) {
+            if (field.disabled) return; // skip fields in the currently hidden section
             if (!field.validity.valid) {
                 field.setAttribute('aria-invalid', 'true');
                 field.classList.add('border-red-500');
-                if (valid) field.focus();
+                if (valid) {
+                    field.focus();
+                    var lbl = form.querySelector('label[for="' + field.id + '"]');
+                    firstInvalidLabel = lbl ? lbl.textContent.replace('*', '').trim() : (field.name || field.id);
+                }
                 valid = false;
             } else {
                 field.removeAttribute('aria-invalid');
                 field.classList.remove('border-red-500');
             }
         });
+        form.dataset.firstInvalidLabel = firstInvalidLabel;
         return valid;
     }
 

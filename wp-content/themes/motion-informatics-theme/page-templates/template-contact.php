@@ -163,9 +163,9 @@ get_header(); ?>
                     </div>
                 </div>
 
-                <!-- reCAPTCHA -->
+                <!-- reCAPTCHA v3 (invisible — token generated on submit via theme.js) -->
                 <?php if ($recaptcha_key): ?>
-                <div class="g-recaptcha" data-sitekey="<?php echo esc_attr($recaptcha_key); ?>"></div>
+                <input type="hidden" name="g-recaptcha-response" id="mi-recaptcha-token-contact" value="">
                 <?php endif; ?>
 
                 <!-- Status message -->
@@ -190,7 +190,8 @@ get_header(); ?>
             </form>
 
             <?php if ($recaptcha_key): ?>
-            <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+            <script src="https://www.google.com/recaptcha/api.js?render=<?php echo esc_attr($recaptcha_key); ?>" async defer></script>
+            <script>window.MI_RECAPTCHA_SITE_KEY = <?php echo wp_json_encode($recaptcha_key); ?>;</script>
             <?php endif; ?>
         </div>
 
