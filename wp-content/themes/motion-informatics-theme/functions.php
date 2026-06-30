@@ -108,11 +108,12 @@ function mi_enqueue_assets() {
         true
     );
 
-    // Pass AJAX URL and nonce to JS
+    // Pass AJAX URL, nonce, and reCAPTCHA v3 site key to JS
     wp_localize_script('mi-theme', 'MI', [
-        'ajaxUrl' => admin_url('admin-ajax.php'),
-        'nonce'   => wp_create_nonce('mi_form_nonce'),
-        'i18n'    => [
+        'ajaxUrl'          => admin_url('admin-ajax.php'),
+        'nonce'            => wp_create_nonce('mi_form_nonce'),
+        'recaptchaSiteKey' => get_option('mi_recaptcha_site', ''),
+        'i18n'             => [
             'sending'  => __('Sending...', 'motion-informatics'),
             'success'  => __('Message sent successfully!', 'motion-informatics'),
             'error'    => __('Something went wrong. Please try again.', 'motion-informatics'),
@@ -997,7 +998,7 @@ function mi_handle_contact_form() {
             'body' => ['secret' => $secret, 'response' => $token],
         ]);
         $result = json_decode(wp_remote_retrieve_body($verify), true);
-        if (empty($result['success'])) {
+        if (empty($result['success']) || (isset($result['score']) && $result['score'] < 0.5)) {
             wp_send_json_error(['message' => __('reCAPTCHA verification failed. Please try again.', 'motion-informatics')]);
         }
     }
@@ -1272,7 +1273,7 @@ function mi_webhook_settings_page() {
                     <td>
                         <input type="text" id="mi_recaptcha_site" name="mi_recaptcha_site"
                                value="<?php echo esc_attr($recaptcha_site); ?>" class="large-text" placeholder="6Lc...">
-                        <p class="description"><?php _e('Public site key from Google reCAPTCHA v2 ("I\'m not a robot"). Get one at google.com/recaptcha.', 'motion-informatics'); ?></p>
+                        <p class="description"><?php _e('Public site key from Google reCAPTCHA v3 (invisible, no checkbox). Get one at google.com/recaptcha.', 'motion-informatics'); ?></p>
                     </td>
                 </tr>
                 <tr>

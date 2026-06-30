@@ -323,24 +323,38 @@
             formData.append('action', 'mi_contact_form');
             formData.append('nonce', (typeof MI !== 'undefined') ? MI.nonce : '');
 
-            fetch((typeof MI !== 'undefined') ? MI.ajaxUrl : '/wp-admin/admin-ajax.php', {
-                method: 'POST', body: formData, credentials: 'same-origin',
-            })
-            .then(function (res) { return res.json(); })
-            .then(function (data) {
-                showFormStatus(statusEl, data.success, data.data ? data.data.message : '');
-                if (data.success) {
-                    contactForm.reset();
-                    miSwitchType('patient');
-                }
-            })
-            .catch(function () {
-                showFormStatus(statusEl, false, 'Something went wrong. Please try again.');
-            })
-            .finally(function () {
-                submitBtn.disabled = false;
-                submitBtn.innerHTML = 'Send Inquiry <span class="material-symbols-outlined" aria-hidden="true">send</span>';
-            });
+            var siteKey = (typeof MI !== 'undefined' && MI.recaptchaSiteKey) ? MI.recaptchaSiteKey : '';
+
+            var doSubmit = function (token) {
+                if (token) formData.set('g-recaptcha-response', token);
+
+                fetch((typeof MI !== 'undefined') ? MI.ajaxUrl : '/wp-admin/admin-ajax.php', {
+                    method: 'POST', body: formData, credentials: 'same-origin',
+                })
+                .then(function (res) { return res.json(); })
+                .then(function (data) {
+                    showFormStatus(statusEl, data.success, data.data ? data.data.message : '');
+                    if (data.success) {
+                        contactForm.reset();
+                        miSwitchType('patient');
+                    }
+                })
+                .catch(function () {
+                    showFormStatus(statusEl, false, 'Something went wrong. Please try again.');
+                })
+                .finally(function () {
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = 'Send Inquiry <span class="material-symbols-outlined" aria-hidden="true">send</span>';
+                });
+            };
+
+            if (siteKey && typeof grecaptcha !== 'undefined') {
+                grecaptcha.ready(function () {
+                    grecaptcha.execute(siteKey, { action: 'contact' }).then(doSubmit);
+                });
+            } else {
+                doSubmit('');
+            }
         });
     }
 
@@ -365,18 +379,32 @@
             formData.append('action', 'mi_contact_form');
             formData.append('nonce', (typeof MI !== 'undefined') ? MI.nonce : '');
 
-            fetch((typeof MI !== 'undefined') ? MI.ajaxUrl : '/wp-admin/admin-ajax.php', {
-                method: 'POST', body: formData, credentials: 'same-origin',
-            })
-            .then(function (res) { return res.json(); })
-            .then(function (data) {
-                showFormStatus(statusEl, data.success, data.data ? data.data.message : '');
-                if (data.success) distForm.reset();
-            })
-            .catch(function () {
-                showFormStatus(statusEl, false, 'Something went wrong. Please try again.');
-            })
-            .finally(function () { submitBtn.disabled = false; });
+            var siteKeyDist = (typeof MI !== 'undefined' && MI.recaptchaSiteKey) ? MI.recaptchaSiteKey : '';
+
+            var doDistSubmit = function (token) {
+                if (token) formData.set('g-recaptcha-response', token);
+
+                fetch((typeof MI !== 'undefined') ? MI.ajaxUrl : '/wp-admin/admin-ajax.php', {
+                    method: 'POST', body: formData, credentials: 'same-origin',
+                })
+                .then(function (res) { return res.json(); })
+                .then(function (data) {
+                    showFormStatus(statusEl, data.success, data.data ? data.data.message : '');
+                    if (data.success) distForm.reset();
+                })
+                .catch(function () {
+                    showFormStatus(statusEl, false, 'Something went wrong. Please try again.');
+                })
+                .finally(function () { submitBtn.disabled = false; });
+            };
+
+            if (siteKeyDist && typeof grecaptcha !== 'undefined') {
+                grecaptcha.ready(function () {
+                    grecaptcha.execute(siteKeyDist, { action: 'distributor' }).then(doDistSubmit);
+                });
+            } else {
+                doDistSubmit('');
+            }
         });
     }
 
