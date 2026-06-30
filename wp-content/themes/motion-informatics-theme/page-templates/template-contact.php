@@ -211,7 +211,7 @@ get_header(); ?>
                 </div>
             </div>
 
-            <!-- Locations -->
+            <!-- Locations — single "HQ" tile listing all offices with country flags -->
             <?php
             $locs_raw = get_post_meta(get_the_ID(), 'contact_locations_json', true);
             $locations = ($locs_raw) ? json_decode($locs_raw, true) : null;
@@ -224,28 +224,32 @@ get_header(); ?>
                 'India' => '🇮🇳', 'Brazil' => '🇧🇷', 'Mexico' => '🇲🇽', 'Canada' => '🇨🇦',
                 'Singapore' => '🇸🇬', 'South Korea' => '🇰🇷', 'UAE' => '🇦🇪',
             ];
-            foreach ($locations as $loc) :
-                $flag = $loc['flag'] ?? '';
-                if (!$flag) {
-                    foreach ($mi_country_flags as $country => $emoji) {
-                        if (stripos(($loc['line2'] ?? ''), $country) !== false) { $flag = $emoji; break; }
-                    }
-                }
-                if (!$flag) $flag = '🌍';
             ?>
             <div class="flex items-start gap-4 group">
-                <div class="size-12 rounded-xl flex items-center justify-center transition-all flex-shrink-0 text-2xl leading-none" style="background-color:rgba(63,62,111,0.1);" aria-hidden="true">
-                    <span><?php echo esc_html($flag); ?></span>
+                <div class="size-12 rounded-xl flex items-center justify-center transition-all flex-shrink-0" style="background-color:rgba(63,62,111,0.1);color:#3f3e6f;" aria-hidden="true">
+                    <span class="material-symbols-outlined">location_on</span>
                 </div>
-                <div>
-                    <h2 class="font-bold text-slate-900 dark:text-white mb-1"><?php echo esc_html($loc['label'] ?? ''); ?></h2>
-                    <address class="text-slate-600 dark:text-slate-400 not-italic">
-                        <?php echo esc_html($loc['line1'] ?? ''); ?><br>
-                        <?php echo esc_html($loc['line2'] ?? ''); ?>
-                    </address>
+                <div class="space-y-4 flex-1">
+                    <h2 class="font-bold text-slate-900 dark:text-white"><?php _e('HQ', 'motion-informatics'); ?></h2>
+                    <?php foreach ($locations as $loc) :
+                        $flag = $loc['flag'] ?? '';
+                        if (!$flag) {
+                            foreach ($mi_country_flags as $country => $emoji) {
+                                if (stripos(($loc['line2'] ?? ''), $country) !== false) { $flag = $emoji; break; }
+                            }
+                        }
+                        if (!$flag) $flag = '🌍';
+                    ?>
+                    <div class="flex items-start gap-3">
+                        <span class="text-xl leading-none flex-shrink-0 mt-0.5" aria-hidden="true"><?php echo esc_html($flag); ?></span>
+                        <address class="text-slate-600 dark:text-slate-400 not-italic text-sm leading-relaxed">
+                            <?php echo esc_html($loc['line1'] ?? ''); ?><br>
+                            <?php echo esc_html($loc['line2'] ?? ''); ?>
+                        </address>
+                    </div>
+                    <?php endforeach; ?>
                 </div>
             </div>
-            <?php endforeach; ?>
 
             <!-- World Map with HQ Pins -->
             <?php
