@@ -233,66 +233,6 @@ get_header(); ?>
     </div>
 </section>
 
-<!-- ═══════════════════════════════════════════════════════════════════════════
-     RESOURCE CENTER
-═══════════════════════════════════════════════════════════════════════════ -->
-<section class="bg-gray-50 dark:bg-gray-800/30 py-24" aria-labelledby="resources-heading">
-    <div class="max-w-7xl mx-auto px-6">
-        <div class="flex justify-between items-end mb-12">
-            <div>
-                <h2 id="resources-heading" class="text-3xl font-bold mb-2 text-[#131316] dark:text-white"><?php echo esc_html(mi_field('dist_resources_heading', false, 'Resource Center')); ?></h2>
-                <p class="text-gray-500 dark:text-gray-400"><?php echo esc_html(mi_field('dist_resources_desc', false, 'Download essential documentation for your region.')); ?></p>
-            </div>
-        </div>
-
-        <?php
-        $resources_raw = get_post_meta(get_the_ID(), 'dist_resources_json', true);
-        $resources     = ($resources_raw) ? json_decode($resources_raw, true) : null;
-        if (!$resources) $resources = function_exists('get_field') ? get_field('dist_resources') : null;
-        if (!$resources) {
-            $resources = [
-                ['type'=>'PDF', 'icon'=>'picture_as_pdf', 'title'=>'Distributor Prospectus 2025',  'file_url'=>'#'],
-                ['type'=>'PDF', 'icon'=>'picture_as_pdf', 'title'=>'Clinical Evidence Summary',    'file_url'=>'#'],
-                ['type'=>'PPT', 'icon'=>'slideshow',      'title'=>'Product Presentation Deck',    'file_url'=>'#'],
-            ];
-        }
-        ?>
-
-        <ul class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 list-none" role="list">
-            <?php foreach ($resources as $resource) : ?>
-            <li class="bg-white dark:bg-gray-900 rounded-2xl overflow-hidden shadow-lg border border-gray-100 dark:border-gray-800 group hover:-translate-y-1 transition-all duration-300">
-                <?php if (!empty($resource['image'])) : ?>
-                <div class="h-48 overflow-hidden">
-                    <img src="<?php echo esc_url($resource['image']); ?>"
-                         alt="<?php echo esc_attr($resource['title'] ?? ''); ?>"
-                         class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                         loading="lazy">
-                </div>
-                <?php else : ?>
-                <div class="h-48 flex items-center justify-center" style="background:linear-gradient(to bottom right, rgba(63,62,111,0.1), rgba(45,157,168,0.1));">
-                    <span class="material-symbols-outlined text-5xl" style="color:rgba(63,62,111,0.3);" aria-hidden="true"><?php echo esc_html($resource['icon'] ?? 'description'); ?></span>
-                </div>
-                <?php endif; ?>
-                <div class="p-6">
-                    <div class="flex items-center gap-2 text-xs font-bold text-gray-400 uppercase tracking-widest mb-3">
-                        <span class="material-symbols-outlined text-sm" aria-hidden="true"><?php echo esc_html($resource['icon'] ?? 'description'); ?></span>
-                        <?php echo esc_html($resource['type'] ?? ''); ?>
-                    </div>
-                    <h3 class="text-xl font-bold mb-4 leading-tight text-[#131316] dark:text-white"><?php echo esc_html($resource['title'] ?? ''); ?></h3>
-                    <a href="<?php echo esc_url($resource['file_url'] ?? '#'); ?>"
-                       class="flex items-center gap-2 font-bold group/dl"
-                       style="color:#3f3e6f;"
-                       <?php if (!empty($resource['file_url']) && $resource['file_url'] !== '#') echo 'download target="_blank" rel="noopener"'; ?>>
-                        <?php echo esc_html(mi_field('dist_download_label', false, 'Download')); ?>
-                        <span class="material-symbols-outlined text-lg group-hover/dl:translate-x-1 transition-transform" aria-hidden="true">download</span>
-                    </a>
-                </div>
-            </li>
-            <?php endforeach; ?>
-        </ul>
-    </div>
-</section>
-
 </main>
 
 <?php get_footer();
