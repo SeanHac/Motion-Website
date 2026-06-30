@@ -135,28 +135,28 @@ get_header(); ?>
                     <div class="space-y-2">
                         <label for="company" class="<?php echo $lbl; ?>"><?php _e('Company / Organization', 'motion-informatics'); ?><?php echo $star; ?></label>
                         <input id="company" name="company" type="text" class="<?php echo $inp; ?>"
-                               placeholder="Medical Solutions Ltd." autocomplete="organization" disabled>
+                               placeholder="Medical Solutions Ltd." autocomplete="organization" required aria-required="true" disabled>
                     </div>
                     <div class="space-y-2">
                         <label for="company_url" class="<?php echo $lbl; ?>"><?php _e('Company Website or LinkedIn URL', 'motion-informatics'); ?><?php echo $star; ?></label>
                         <input id="company_url" name="company_url" type="url" class="<?php echo $inp; ?>"
-                               placeholder="https://company.com or https://linkedin.com/company/..." disabled>
+                               placeholder="https://company.com or https://linkedin.com/company/..." required aria-required="true" disabled>
                     </div>
                     <div class="space-y-2">
                         <label for="role" class="<?php echo $lbl; ?>"><?php _e('Your Role / Position', 'motion-informatics'); ?><?php echo $star; ?></label>
                         <input id="role" name="role" type="text" class="<?php echo $inp; ?>"
-                               placeholder="Clinical Director" disabled>
+                               placeholder="Clinical Director" required aria-required="true" disabled>
                     </div>
                     <div class="space-y-2">
                         <label for="pro_message" class="<?php echo $lbl; ?>"><?php _e('Why are you contacting us?', 'motion-informatics'); ?><?php echo $star; ?></label>
                         <textarea id="pro_message" name="message" rows="4"
                                   class="<?php echo $inp; ?> resize-none"
                                   placeholder="<?php _e('Please describe your inquiry or partnership interest...', 'motion-informatics'); ?>"
-                                  disabled></textarea>
+                                  required aria-required="true" disabled></textarea>
                     </div>
                     <div class="flex items-start gap-3">
                         <input type="checkbox" id="consent_pro" name="consent" value="1"
-                               class="mt-1 rounded border-slate-300 flex-shrink-0" style="accent-color:#3f3e6f;" disabled>
+                               class="mt-1 rounded border-slate-300 flex-shrink-0" style="accent-color:#3f3e6f;" required disabled>
                         <label for="consent_pro" class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed cursor-pointer">
                             <?php echo esc_html($consent_pro); ?> <span class="text-red-500">*</span>
                         </label>
@@ -164,9 +164,8 @@ get_header(); ?>
                 </div>
 
                 <!-- reCAPTCHA -->
-                <!-- reCAPTCHA v3 — invisible, token injected by JS before submit -->
                 <?php if ($recaptcha_key): ?>
-                <input type="hidden" name="g-recaptcha-response" id="g-recaptcha-response">
+                <div class="g-recaptcha" data-sitekey="<?php echo esc_attr($recaptcha_key); ?>"></div>
                 <?php endif; ?>
 
                 <!-- Status message -->
@@ -191,7 +190,7 @@ get_header(); ?>
             </form>
 
             <?php if ($recaptcha_key): ?>
-            <script src="https://www.google.com/recaptcha/api.js?render=<?php echo esc_attr($recaptcha_key); ?>" async defer></script>
+            <script src="https://www.google.com/recaptcha/api.js" async defer></script>
             <?php endif; ?>
         </div>
 
@@ -215,11 +214,27 @@ get_header(); ?>
             <?php
             $locs_raw = get_post_meta(get_the_ID(), 'contact_locations_json', true);
             $locations = ($locs_raw) ? json_decode($locs_raw, true) : null;
-            if (!$locations) $locations = [['label'=>mi_field('contact_hq_label', false, 'Global HQ'), 'line1'=>'1200 Innovation Way, Suite 400', 'line2'=>'Cambridge, MA 02142, USA']];
-            foreach ($locations as $loc) : ?>
+            if (!$locations) $locations = [['label'=>'Global HQ', 'line1'=>'1200 Innovation Way, Suite 400', 'line2'=>'Cambridge, MA 02142, USA']];
+            $mi_country_flags = [
+                'Cyprus' => '🇨🇾', 'Indonesia' => '🇮🇩', 'United States' => '🇺🇸', 'USA' => '🇺🇸',
+                'United Kingdom' => '🇬🇧', 'UK' => '🇬🇧', 'Germany' => '🇩🇪', 'France' => '🇫🇷',
+                'Italy' => '🇮🇹', 'Spain' => '🇪🇸', 'Netherlands' => '🇳🇱', 'Switzerland' => '🇨🇭',
+                'Israel' => '🇮🇱', 'Australia' => '🇦🇺', 'Japan' => '🇯🇵', 'China' => '🇨🇳',
+                'India' => '🇮🇳', 'Brazil' => '🇧🇷', 'Mexico' => '🇲🇽', 'Canada' => '🇨🇦',
+                'Singapore' => '🇸🇬', 'South Korea' => '🇰🇷', 'UAE' => '🇦🇪',
+            ];
+            foreach ($locations as $loc) :
+                $flag = $loc['flag'] ?? '';
+                if (!$flag) {
+                    foreach ($mi_country_flags as $country => $emoji) {
+                        if (stripos(($loc['line2'] ?? ''), $country) !== false) { $flag = $emoji; break; }
+                    }
+                }
+                if (!$flag) $flag = '🌍';
+            ?>
             <div class="flex items-start gap-4 group">
-                <div class="size-12 rounded-xl flex items-center justify-center transition-all flex-shrink-0" style="background-color:rgba(63,62,111,0.1);color:#3f3e6f;" aria-hidden="true">
-                    <span class="material-symbols-outlined">location_on</span>
+                <div class="size-12 rounded-xl flex items-center justify-center transition-all flex-shrink-0 text-2xl leading-none" style="background-color:rgba(63,62,111,0.1);" aria-hidden="true">
+                    <span><?php echo esc_html($flag); ?></span>
                 </div>
                 <div>
                     <h2 class="font-bold text-slate-900 dark:text-white mb-1"><?php echo esc_html($loc['label'] ?? ''); ?></h2>
@@ -231,35 +246,43 @@ get_header(); ?>
             </div>
             <?php endforeach; ?>
 
-            <!-- Map -->
+            <!-- World Map with HQ Pins -->
             <?php
-            $map_url   = mi_field('contact_map_url');
-            $map_label = mi_field('contact_map_label', false, 'Cambridge, MA');
+            $map_label = mi_field('contact_map_label', false, 'Our Global Offices');
+            $map_image = mi_field('contact_map_image') ?: (get_template_directory_uri() . '/assets/images/dist-world-map.jpg');
+            $map_pins  = $locations;
+            if (empty($map_pins)) $map_pins = [];
+            $pin_coords = [
+                'Cyprus'    => ['left' => '59.2%', 'top' => '30.7%'],
+                'Indonesia' => ['left' => '79.7%', 'top' => '53.4%'],
+            ];
             ?>
-            <?php if ($map_url) : ?>
-            <div class="relative w-full aspect-video rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-800">
-                <iframe src="<?php echo esc_url($map_url); ?>"
-                        width="100%" height="100%"
-                        style="border:0;" allowfullscreen="" loading="lazy"
-                        referrerpolicy="no-referrer-when-downgrade"
-                        title="<?php printf(__('Map showing %s', 'motion-informatics'), esc_attr($map_label)); ?>"
-                        class="absolute inset-0 w-full h-full"></iframe>
-            </div>
-            <?php else : ?>
-            <div class="relative w-full aspect-video rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-800">
-                <img src="<?php echo get_template_directory_uri() . '/assets/images/contact-map.jpg'; ?>"
-                     alt="<?php printf(__('Map showing %s', 'motion-informatics'), esc_attr($map_label)); ?>"
+            <div class="relative w-full aspect-video rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800">
+                <img src="<?php echo esc_url($map_image); ?>"
+                     alt="<?php printf(__('World map showing %s', 'motion-informatics'), esc_attr($map_label)); ?>"
                      class="w-full h-full object-cover"
                      loading="lazy">
-                <div class="absolute inset-0 flex items-center justify-center bg-slate-100/70 dark:bg-slate-800/70">
-                    <div class="text-center p-6">
-                        <span class="material-symbols-outlined text-4xl mb-2 block" style="color:rgba(63,62,111,0.5);" aria-hidden="true">map</span>
-                        <p class="text-sm text-slate-500"><?php echo esc_html($map_label); ?></p>
-                        <p class="text-xs text-slate-400 mt-1"><?php echo esc_html(mi_field('contact_map_placeholder', false, 'Add a Google Maps Embed URL in Theme Settings')); ?></p>
-                    </div>
+                <?php foreach ($map_pins as $pin) :
+                    $country = '';
+                    foreach (array_keys($pin_coords) as $c) {
+                        if (stripos(($pin['line2'] ?? ''), $c) !== false) { $country = $c; break; }
+                    }
+                    if (!$country || empty($pin_coords[$country])) continue;
+                    $pos  = $pin_coords[$country];
+                    $flag = $pin['flag'] ?? '';
+                    if (!$flag) {
+                        $flag_lookup = ['Cyprus' => '🇨🇾', 'Indonesia' => '🇮🇩'];
+                        $flag = $flag_lookup[$country] ?? '';
+                    }
+                ?>
+                <div class="absolute -translate-x-1/2 -translate-y-full group/pin" style="left:<?php echo esc_attr($pos['left']); ?>;top:<?php echo esc_attr($pos['top']); ?>;">
+                    <span class="material-symbols-outlined text-4xl drop-shadow-lg" style="color:#2563eb;font-variation-settings:'FILL' 1;" aria-hidden="true">location_on</span>
+                    <span class="absolute bottom-full left-1/2 -translate-x-1/2 mb-1 whitespace-nowrap bg-white dark:bg-slate-900 text-xs font-semibold text-slate-700 dark:text-slate-200 px-2 py-1 rounded-md shadow-md opacity-0 group-hover/pin:opacity-100 transition-opacity pointer-events-none">
+                        <?php echo esc_html($flag); ?> <?php echo esc_html($pin['label'] ?? $country); ?>
+                    </span>
                 </div>
+                <?php endforeach; ?>
             </div>
-            <?php endif; ?>
 
             <!-- Support Hours -->
             <div class="p-6 rounded-xl bg-slate-900 dark:bg-white text-white dark:text-slate-900">
