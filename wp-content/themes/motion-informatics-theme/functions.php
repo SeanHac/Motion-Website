@@ -1401,6 +1401,8 @@ function mi_send_monday(array $data): bool {
         'date4'              => ['date' => date('Y-m-d')],
         'text_mm4tx9tw'      => $data['company'] ?? '',
         'text_mm4t2hw8'      => $data['role'] ?? '',
+        'text_mm4vd12e'      => $data['first_name'] ?? '',
+        'text_mm4vsk36'      => $data['last_name'] ?? '',
     ];
     if (!empty($data['company_url'])) {
         $columns_raw['link_mm4t6ct8'] = ['url' => $data['company_url'], 'text' => $data['company_url']];

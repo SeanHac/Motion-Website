@@ -100,7 +100,7 @@ get_header(); ?>
                     <label for="contact_phone" class="<?php echo $lbl; ?>"><?php _e('Phone Number', 'motion-informatics'); ?><?php echo $star; ?></label>
                     <div class="flex border border-slate-200 dark:border-slate-700 rounded-lg overflow-hidden bg-slate-50 dark:bg-slate-800 focus-within:ring-2" style="--tw-ring-color:#3f3e6f;">
                         <select name="phone_prefix" autocomplete="tel-country-code"
-                                class="bg-slate-100 dark:bg-slate-700 border-r border-slate-200 dark:border-slate-600 px-3 py-3 text-sm outline-none dark:text-white flex-shrink-0">
+                                class="bg-slate-100 dark:bg-slate-700 border-r border-slate-200 dark:border-slate-600 pl-3 pr-7 py-3 text-sm outline-none dark:text-white flex-shrink-0" style="min-width:100px;">
                             <?php foreach ($phone_prefixes as $code => $display):
                                 $selected = ($code === '+972') ? 'selected' : ''; ?>
                             <option value="<?php echo esc_attr($code); ?>" <?php echo $selected; ?>><?php echo esc_html($display); ?></option>
