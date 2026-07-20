@@ -49,16 +49,16 @@ get_header(); ?>
         <!-- Product Image with Floating Element -->
         <div class="relative">
             <?php $sp_image = mi_field('sp_image'); ?>
-            <div class="relative z-10 w-full aspect-square rounded-3xl overflow-hidden shadow-2xl bg-slate-200 dark:bg-slate-800">
+            <div class="relative z-10 w-full rounded-3xl overflow-hidden shadow-2xl bg-slate-200 dark:bg-slate-800">
                 <?php if ($sp_image) : ?>
                     <img src="<?php echo esc_url($sp_image); ?>"
                          alt="<?php echo esc_attr(mi_field('sp_image_alt', false, 'Spatial StimelMD — AR-enhanced neuromuscular rehabilitation system')); ?>"
-                         class="w-full h-full object-cover"
+                         class="w-full h-auto object-cover"
                          loading="eager">
                 <?php else : ?>
                     <img src="<?php echo get_template_directory_uri() . '/assets/images/ssmd-img-5.jpg'; ?>"
                          alt="<?php echo esc_attr(mi_field('sp_image_alt', false, 'Spatial StimelMD® — clinical rehabilitation session')); ?>"
-                         class="w-full h-full object-cover"
+                         class="w-full h-auto object-cover"
                          loading="eager"
                          onerror="this.onerror=null;this.src='<?php echo esc_js(get_template_directory_uri() . '/assets/images/spatial-hero-device.jpg'); ?>'">
                 <?php endif; ?>
