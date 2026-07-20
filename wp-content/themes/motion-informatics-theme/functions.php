@@ -94,7 +94,7 @@ function mi_enqueue_assets() {
     $bg_dark     = get_theme_mod('mi_color_bg_dark',     '#16161c');
 
     $tailwind_config = sprintf(
-        'tailwind.config={darkMode:false,theme:{extend:{colors:{primary:"%s","accent-teal":"%s","accent-ochre":"%s","background-light":"%s","background-dark":"%s"},fontFamily:{display:["Inter","sans-serif"]},borderRadius:{DEFAULT:"0.5rem",lg:"1rem",xl:"1.5rem",full:"9999px"}}}}};',
+        'tailwind.config={darkMode:false,theme:{extend:{colors:{primary:"%s","accent-teal":"%s","accent-ochre":"%s","background-light":"%s","background-dark":"%s"},fontFamily:{display:["Inter","sans-serif"]},borderRadius:{DEFAULT:"0.5rem",lg:"1rem",xl:"1.5rem",full:"9999px"}}}};',
         esc_js($primary), esc_js($accent_teal), esc_js($accent_ochre), esc_js($bg_light), esc_js($bg_dark)
     );
     wp_add_inline_script('tailwindcss', $tailwind_config, 'after');

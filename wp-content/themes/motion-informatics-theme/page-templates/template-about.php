@@ -34,10 +34,6 @@ get_header(); ?>
                     <?php echo esc_html(mi_field('about_btn1_text', false, 'Our Methodology')); ?>
                     <span class="material-symbols-outlined text-sm" aria-hidden="true">arrow_forward</span>
                 </a>
-                <a href="<?php echo esc_url(mi_field('about_btn2_url', false, '#')); ?>"
-                   class="flex items-center gap-2 px-8 py-4 border-2 border-gray-200 dark:border-gray-700 text-[#3f3e6f] dark:text-white font-bold rounded-xl hover:bg-gray-50 dark:hover:bg-gray-800 transition-all">
-                    <?php echo esc_html(mi_field('about_btn2_text', false, 'Clinical Data')); ?>
-                </a>
             </div>
         </div>
         <div class="relative">
@@ -226,11 +222,6 @@ get_header(); ?>
                     <h3 class="font-bold text-xl mb-3"><?php echo esc_html(mi_field('about_cta_heading', false, 'Join Our Mission')); ?></h3>
                     <p class="text-white/80 text-sm leading-relaxed mb-6"><?php echo esc_html(mi_field('about_cta_text', false, 'Be part of the future of neuromuscular health.')); ?></p>
                 </div>
-                <a href="<?php echo esc_url(mi_field('about_cta_url', false, '#')); ?>"
-                   class="flex items-center gap-2 font-bold text-white hover:gap-4 transition-all">
-                    <?php echo esc_html(mi_field('about_cta_btn', false, 'Get Started')); ?>
-                    <span class="material-symbols-outlined" aria-hidden="true">arrow_forward</span>
-                </a>
             </li>
         </ul>
     </div>

@@ -514,4 +514,31 @@
         el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     }
 
+    // ── GOOGLE ANALYTICS 4 — BUTTON & LINK CLICK TRACKING ────────────────────
+    // Automatically tracks every button/link click across the entire site.
+    // Data appears in GA4 under Events → button_click.
+    (function () {
+        if (typeof gtag === 'undefined') return;
+
+        document.addEventListener('click', function (e) {
+            var target = e.target.closest('a, button, [role="button"], input[type="submit"]');
+            if (!target) return;
+
+            var label = (
+                target.textContent.trim() ||
+                target.getAttribute('aria-label') ||
+                target.getAttribute('title') ||
+                target.getAttribute('value') ||
+                'unknown'
+            ).substring(0, 100);
+
+            gtag('event', 'button_click', {
+                button_text:   label,
+                element_type:  target.tagName.toLowerCase(),
+                page_location: window.location.href,
+                link_url:      target.getAttribute('href') || undefined,
+            });
+        }, { passive: true });
+    })();
+
 })();

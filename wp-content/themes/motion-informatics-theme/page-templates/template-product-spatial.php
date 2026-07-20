@@ -33,7 +33,7 @@ get_header(); ?>
                 <?php echo esc_html(mi_field('sp_desc', false, 'A next-generation neuromuscular rehabilitation platform integrating Artificial Intelligence (AI), Augmented Reality (AR), Functional Electrical Stimulation (FES), Neuromuscular Electrical Stimulation (NMES), real-time biofeedback, and BioRhythmIQ technology into a unified, adaptive clinical ecosystem designed to restore motor function and promote neuroplasticity.')); ?>
             </p>
             <div class="flex flex-wrap gap-4 pt-4">
-                <a href="<?php echo esc_url(mi_field('sp_btn1_url', false, '#')); ?>"
+                <a href="#immersive-video"
                    class="mi-product-primary-btn h-14 px-8 text-white font-bold rounded-xl flex items-center gap-2 hover:scale-[1.02] transition-transform"
                    style="background-color:#3f3e6f;">
                     <?php echo esc_html(mi_field('sp_btn1_text', false, 'Explore Technology')); ?>
@@ -97,7 +97,7 @@ get_header(); ?>
             ];
         }
         ?>
-        <div class="lg:col-span-2 mt-8 grid grid-cols-1 <?php echo count($imm_videos) > 1 ? 'lg:grid-cols-2' : ''; ?> gap-8">
+        <div id="immersive-video" class="lg:col-span-2 mt-8 grid grid-cols-1 <?php echo count($imm_videos) > 1 ? 'lg:grid-cols-2' : ''; ?> gap-8">
             <?php foreach ($imm_videos as $imm_v) :
                 $imm_v_url = $imm_v['url'] ?? '';
                 if (!$imm_v_url) continue;

@@ -254,11 +254,6 @@ get_header(); ?>
                 <?php echo esc_html(mi_field('home_cta_desc', false, 'Contact our clinical specialists for a personalized demonstration of our neuromuscular solutions.')); ?>
             </p>
             <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                <a href="<?php echo esc_url(mi_field('home_cta_btn1_url', false, '#')); ?>"
-                   class="font-bold px-10 py-4 rounded-lg transition-colors"
-                   style="background-color:#ffffff;color:#3f3e6f">
-                    <?php echo esc_html(mi_field('home_cta_btn1_text', false, 'Request a Demo')); ?>
-                </a>
                 <a href="<?php echo esc_url(mi_field('home_cta_btn2_url', false, '#')); ?>"
                    class="mi-btn-ochre font-bold px-10 py-4 rounded-lg text-white transition-all">
                     <?php echo esc_html(mi_field('home_cta_btn2_text', false, 'Speak to Sales')); ?>
