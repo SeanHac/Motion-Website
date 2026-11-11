@@ -481,6 +481,15 @@ function mi_register_acf_fields() {
             ['key'=>'field_s3_btn2_text',     'label'=>'Button 2 Text',    'name'=>'s3_btn2_text',    'type'=>'text','default_value'=>'Consult Clinical Papers'],
             ['key'=>'field_s3_btn2_url',      'label'=>'Button 2 URL',     'name'=>'s3_btn2_url',     'type'=>'url'],
             ['key'=>'field_s3_show_hero_badge','label'=>'Show Hero Badge',  'name'=>'s3_show_hero_badge','type'=>'true_false','default_value'=>1,'ui'=>1,'ui_on_text'=>'Show','ui_off_text'=>'Hide'],
+            // Tab: App Download
+            ['key'=>'field_s3_tab_download','label'=>'App Download','name'=>'','type'=>'tab','placement'=>'top','endpoint'=>0],
+            ['key'=>'field_s3_dl_show',     'label'=>'Show App Download Section','name'=>'s3_dl_show',    'type'=>'true_false','default_value'=>1,'ui'=>1,'ui_on_text'=>'Show','ui_off_text'=>'Hide'],
+            ['key'=>'field_s3_dl_label',    'label'=>'Section Title',            'name'=>'s3_dl_label',   'type'=>'text','default_value'=>'STIMEL-03 App'],
+            ['key'=>'field_s3_dl_desc',     'label'=>'Section Description',      'name'=>'s3_dl_desc',    'type'=>'textarea','rows'=>2,'default_value'=>'Install the desktop app to run sessions, review EMG data and track patient progress.'],
+            ['key'=>'field_s3_dl_mac_url',  'label'=>'macOS Installer URL (.dmg) — optional','name'=>'s3_dl_mac_url','type'=>'url','instructions'=>'Leave empty to use the .dmg in the theme folder assets/downloads/. Fill in only to point to an external link (e.g. S3 / CloudFront).'],
+            ['key'=>'field_s3_dl_mac_meta', 'label'=>'macOS Card Subtitle',      'name'=>'s3_dl_mac_meta','type'=>'text','default_value'=>'macOS 12 or later · .dmg'],
+            ['key'=>'field_s3_dl_win_url',  'label'=>'Windows Installer URL (.exe) — optional','name'=>'s3_dl_win_url','type'=>'url','instructions'=>'Leave empty to use the .exe in the theme folder assets/downloads/. Fill in only to point to an external link (e.g. S3 / CloudFront).'],
+            ['key'=>'field_s3_dl_win_meta', 'label'=>'Windows Card Subtitle',    'name'=>'s3_dl_win_meta','type'=>'text','default_value'=>'Windows 10 / 11 · .exe'],
             // Tab: Key Benefits
             ['key'=>'field_s3_tab_benefits','label'=>'Key Benefits','name'=>'','type'=>'tab','placement'=>'top','endpoint'=>0],
             ['key'=>'field_s3_benefits',      'label'=>'Key Benefits',     'name'=>'s3_benefits',     'type'=>'repeater','button_label'=>'Add Benefit','layout'=>'table',
@@ -1467,7 +1476,58 @@ function mi_send_webhook(array $data): bool {
     return wp_remote_retrieve_response_code($response) < 300;
 }
 
+// ─── ALLOW APP INSTALLER UPLOADS (.exe / .dmg) — ADMINS ONLY ────────────────
+// WordPress blocks .exe and doesn't know .dmg. This lets administrators upload
+// the STIMEL-03 installers to the Media Library. Other roles are unaffected.
+
+add_filter('upload_mimes', function ($mimes) {
+    if (current_user_can('manage_options')) {
+        $mimes['exe'] = 'application/x-msdownload';
+        $mimes['dmg'] = 'application/x-apple-diskimage';
+    }
+    return $mimes;
+});
+
+add_filter('wp_check_filetype_and_ext', function ($data, $file, $filename, $mimes) {
+    if (!current_user_can('manage_options')) return $data;
+    $ext = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
+    if ($ext === 'exe') {
+        $data['ext']  = 'exe';
+        $data['type'] = 'application/x-msdownload';
+    } elseif ($ext === 'dmg') {
+        $data['ext']  = 'dmg';
+        $data['type'] = 'application/x-apple-diskimage';
+    }
+    return $data;
+}, 10, 4);
+
 // ─── HELPER FUNCTIONS ────────────────────────────────────────────────────────
+
+/**
+ * Find an app installer in the theme folder /assets/downloads/ by extension.
+ * If several files share the extension, the most recently modified one wins,
+ * so you can drop in a new version (e.g. STIMEL-03-1.2.dmg) without editing code.
+ *
+ * @param string $ext 'exe' or 'dmg'
+ * @return array|null ['url' => string, 'size' => string] or null if none found
+ */
+function mi_theme_download(string $ext): ?array {
+    $dir   = get_template_directory() . '/assets/downloads/';
+    $files = glob($dir . '*.' . $ext) ?: [];
+    // glob is case-sensitive on Linux — also accept .EXE / .DMG
+    $files = array_merge($files, glob($dir . '*.' . strtoupper($ext)) ?: []);
+    if (empty($files)) return null;
+
+    usort($files, function ($a, $b) { return filemtime($b) <=> filemtime($a); });
+    $file = $files[0];
+
+    return [
+        // ?v= busts browser/CDN caches when the file is replaced under the same name
+        'url'  => get_template_directory_uri() . '/assets/downloads/' . rawurlencode(basename($file)) . '?v=' . filemtime($file),
+        'size' => size_format(filesize($file), 1) ?: '',
+    ];
+}
+
 
 /**
  * Get an ACF field value with fallback.

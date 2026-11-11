@@ -71,7 +71,7 @@ get_header(); ?>
         }
         ?>
         <?php if (!empty($diff_videos)) : ?>
-        <div class="order-3 lg:col-span-2 mt-8 grid grid-cols-1 <?php echo (count($diff_videos) > 1) ? 'lg:grid-cols-2' : ''; ?> gap-8">
+        <div class="order-4 lg:col-span-2 mt-8 grid grid-cols-1 <?php echo (count($diff_videos) > 1) ? 'lg:grid-cols-2' : ''; ?> gap-8">
             <?php foreach ($diff_videos as $vid) :
                 $vurl = $vid['url'] ?? '';
                 if (!$vurl) continue;
@@ -99,6 +99,73 @@ get_header(); ?>
         <?php endif; ?>
     </div>
 </section>
+
+<!-- ═══════════════════════════════════════════════════════════════════════════
+     APP DOWNLOAD — STIMEL-03 desktop app (Windows / macOS)
+     Files are picked up automatically from /assets/downloads/ (*.exe, *.dmg).
+     A URL set in WP admin (App Download tab) overrides the local file.
+═══════════════════════════════════════════════════════════════════════════ -->
+<?php
+$dl_show  = function_exists('get_field') ? get_field('s3_dl_show') : true;
+$dl_items = [];
+
+$dl_platforms = [
+    ['os' => 'macOS',   'ext' => 'dmg', 'icon' => 'laptop_mac',      'url_field' => 's3_dl_mac_url', 'meta_field' => 's3_dl_mac_meta', 'meta_default' => 'macOS 12 or later · .dmg'],
+    ['os' => 'Windows', 'ext' => 'exe', 'icon' => 'desktop_windows', 'url_field' => 's3_dl_win_url', 'meta_field' => 's3_dl_win_meta', 'meta_default' => 'Windows 10 / 11 · .exe'],
+];
+foreach ($dl_platforms as $p) {
+    $admin_url = mi_field($p['url_field']);
+    $local     = $admin_url ? null : mi_theme_download($p['ext']);
+    $url       = $admin_url ?: ($local['url'] ?? '');
+    if (!$url) continue;
+    $meta = mi_field($p['meta_field'], false, $p['meta_default']);
+    if ($local && $local['size']) $meta .= ' · ' . $local['size'];
+    $dl_items[] = ['url' => $url, 'os' => $p['os'], 'ext' => $p['ext'], 'icon' => $p['icon'], 'meta' => $meta];
+}
+?>
+<?php if (($dl_show === null || $dl_show) && !empty($dl_items)) : ?>
+<section id="download" class="max-w-[1280px] mx-auto w-full px-6 pb-16 md:pb-20" aria-labelledby="s3-download-heading">
+    <div class="rounded-3xl border border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-[#16161c]/50 p-6 md:p-10 flex flex-col lg:flex-row lg:items-center gap-8">
+        <div class="lg:w-[34%] flex-none">
+            <h2 id="s3-download-heading" class="text-2xl md:text-3xl font-black text-[#3f3e6f] dark:text-white mb-2">
+                <?php echo esc_html(mi_field('s3_dl_label', false, 'STIMEL-03 App')); ?>
+            </h2>
+            <p class="text-gray-600 dark:text-gray-400 leading-relaxed">
+                <?php echo esc_html(mi_field('s3_dl_desc', false, 'Install the desktop app to run sessions, review EMG data and track patient progress.')); ?>
+            </p>
+        </div>
+
+        <ul class="flex-1 grid grid-cols-1 sm:grid-cols-2 gap-4 list-none" role="list">
+            <?php foreach ($dl_items as $dl) : ?>
+            <li>
+                <a href="<?php echo esc_url($dl['url']); ?>"
+                   download
+                   class="group h-full flex items-center gap-4 px-5 py-5 rounded-2xl border-2 border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 hover:border-[#2D9DA8] hover:shadow-lg transition-all focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-offset-2 focus-visible:outline-[#2D9DA8]"
+                   aria-label="<?php echo esc_attr(sprintf(__('Download the STIMEL-03 app for %s', 'motion-informatics'), $dl['os'])); ?>">
+                    <span class="flex-none flex items-center justify-center w-12 h-12 rounded-full" style="background-color:rgba(45,157,168,0.12);color:#2D9DA8;" aria-hidden="true">
+                        <span class="material-symbols-outlined text-[26px]"><?php echo esc_html($dl['icon']); ?></span>
+                    </span>
+                    <span class="flex flex-col flex-1 min-w-0 text-left">
+                        <span class="text-lg font-extrabold leading-tight text-[#3f3e6f] dark:text-white"><?php echo esc_html(sprintf(__('Download for %s', 'motion-informatics'), $dl['os'])); ?></span>
+                        <span class="text-sm text-gray-500 dark:text-gray-400"><?php echo esc_html($dl['meta']); ?></span>
+                    </span>
+                    <span class="flex-none flex items-center justify-center w-10 h-10 rounded-full text-white group-hover:translate-y-0.5 transition-transform" style="background-color:#3f3e6f;" aria-hidden="true">
+                        <span class="material-symbols-outlined text-xl">download</span>
+                    </span>
+                </a>
+            </li>
+            <?php endforeach; ?>
+        </ul>
+    </div>
+</section>
+<?php elseif (current_user_can('edit_pages')) : ?>
+<!-- Only logged-in editors see this hint; visitors see nothing. -->
+<div class="max-w-[1280px] mx-auto w-full px-6 pb-12">
+    <p class="rounded-xl border-2 border-dashed border-amber-300 bg-amber-50 p-4 text-sm text-amber-800">
+        <?php _e('App download section is hidden: no .exe / .dmg found in the theme folder assets/downloads/, no installer URL set on this page, or the section is switched off in the “App Download” tab.', 'motion-informatics'); ?>
+    </p>
+</div>
+<?php endif; ?>
 
 <!-- ═══════════════════════════════════════════════════════════════════════════
      KEY BENEFITS GRID

@@ -89,17 +89,24 @@ get_header(); ?>
 ═══════════════════════════════════════════════════════════════════════════ -->
 <?php
 // Query for featured posts
-$featured_args = [
-    'posts_per_page' => 1,
-    'post_status'    => 'publish',
-    'meta_query'     => [['key'=>'_mi_featured','value'=>'1','compare'=>'=']],
-];
-$featured_query = new WP_Query($featured_args);
+// The featured card follows the active filter (tag) and search, so e.g. the
+// FAQs tab features an FAQ post instead of the latest News item.
+$featured_search = get_search_query();
+$featured_base   = ['posts_per_page' => 1, 'post_status' => 'publish', 'post_type' => 'post'];
+if ($current_type)    $featured_base['tag'] = $current_type;
+if ($featured_search) $featured_base['s']   = $featured_search;
 
-// If no featured post, get the latest
+$featured_query = new WP_Query($featured_base + [
+    'meta_query' => [['key'=>'_mi_featured','value'=>'1','compare'=>'=']],
+]);
+
+// If no featured post matches, use the latest post that matches
 if (!$featured_query->have_posts()) {
-    $featured_query = new WP_Query(['posts_per_page'=>1,'post_status'=>'publish']);
+    $featured_query = new WP_Query($featured_base);
 }
+
+// Remember it so the grid below doesn't show the same post twice
+$featured_id = $featured_query->have_posts() ? $featured_query->posts[0]->ID : 0;
 ?>
 <?php if ($featured_query->have_posts()) : while ($featured_query->have_posts()) : $featured_query->the_post(); ?>
 <section class="max-w-7xl mx-auto px-4 lg:px-10 mb-12 w-full" aria-labelledby="featured-heading">
@@ -160,6 +167,7 @@ if (!$featured_query->have_posts()) {
     ];
     if ($current_type) $news_args['tag'] = $current_type;
     if ($search) $news_args['s'] = $search;
+    if (!empty($featured_id)) $news_args['post__not_in'] = [$featured_id];
     $news_query = new WP_Query($news_args);
     ?>
 
@@ -208,7 +216,7 @@ if (!$featured_query->have_posts()) {
         </li>
         <?php endwhile; ?>
     </ul>
-    <?php else : ?>
+    <?php elseif (empty($featured_id)) : ?>
     <div class="py-20 text-center">
         <span class="material-symbols-outlined text-6xl text-gray-200 dark:text-gray-700 mb-4 block" aria-hidden="true">search_off</span>
         <p class="text-gray-500 dark:text-gray-400"><?php echo esc_html(mi_field('news_no_results', false, 'No articles found. Try a different search or filter.')); ?></p>
